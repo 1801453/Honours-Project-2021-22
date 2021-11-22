@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿// Microsoft Supplied Script for the Kinect
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Kinect = Windows.Kinect;
