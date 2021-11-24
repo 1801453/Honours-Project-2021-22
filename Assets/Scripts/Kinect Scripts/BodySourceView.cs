@@ -155,7 +155,36 @@ public class BodySourceView : MonoBehaviour
             jointObj.transform.parent = body.transform;
 
         }
-        
+
+        GameObject model = new GameObject("Model:" + id);
+
+        model.transform.eulerAngles = offsetObject.transform.eulerAngles;
+
+        CreateCylinder(model, "FootlLeft");
+        CreateCylinder(model, "ShinLeft");
+        CreateCylinder(model, "ThighLeft");
+        CreateCylinder(model, "HipLeft");
+        CreateCylinder(model, "FootlRight");
+        CreateCylinder(model, "ShinRight");
+        CreateCylinder(model, "ThighRight");
+        CreateCylinder(model, "HipRight");
+        CreateCylinder(model, "ThumbLeft");
+        CreateCylinder(model, "FingersLeft");
+        CreateCylinder(model, "HandLeft");
+        CreateCylinder(model, "ForarmLeft");
+        CreateCylinder(model, "BicepLeft");
+        CreateCylinder(model, "ShoulderLeft");
+        CreateCylinder(model, "ThumbRight");
+        CreateCylinder(model, "FingersRight");
+        CreateCylinder(model, "HandRight");
+        CreateCylinder(model, "ForarmRight");
+        CreateCylinder(model, "BicepRight");
+        CreateCylinder(model, "ShoulderRight");
+        CreateCylinder(model, "Stomach");
+        CreateCylinder(model, "Chest");
+        CreateCylinder(model, "Neck");
+        CreateCylinder(model, "Head");
+
         return body;
 
     }
@@ -166,13 +195,13 @@ public class BodySourceView : MonoBehaviour
         for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
         {
 
-            Kinect.Joint sourceJoint = body.Joints[jt];
-            Kinect.Joint? targetJoint = null;
+            Kinect.Joint source = body.Joints[jt];
+            Kinect.Joint? target = null;
             
-            if(_BoneMap.ContainsKey(jt)) { targetJoint = body.Joints[_BoneMap[jt]]; }
+            if(_BoneMap.ContainsKey(jt)) { target = body.Joints[_BoneMap[jt]]; }
             
             Transform jointObj = bodyObject.transform.Find(jt.ToString());
-            jointObj.localPosition = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+            jointObj.localPosition = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(source);
             LineRenderer lr = jointObj.GetComponent<LineRenderer>();
 
             if (body.TrackingId == playerID)
@@ -191,17 +220,214 @@ public class BodySourceView : MonoBehaviour
 
             }
 
-            if (targetJoint.HasValue)
+            if (target.HasValue)
             {
 
                 lr.SetPosition(0, jointObj.localPosition + offsetObject.transform.position);
-                lr.SetPosition(1, (Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint.Value)) + offsetObject.transform.position);
-                lr.SetColors(GetColorForState (sourceJoint.TrackingState), GetColorForState(targetJoint.Value.TrackingState));
+                lr.SetPosition(1, (Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(target.Value)) + offsetObject.transform.position);
+                lr.SetColors(GetColorForState (source.TrackingState), GetColorForState(target.Value.TrackingState));
 
             }
             else { lr.enabled = false; }
 
         }
+
+        GameObject model = GameObject.Find("Model:" + body.TrackingId);
+        Vector3 start, end;
+
+        model.transform.position = offsetObject.transform.position;
+
+        Kinect.Joint sourceJoint = body.Joints[Kinect.JointType.FootLeft];
+        Kinect.Joint targetJoint = body.Joints[_BoneMap[Kinect.JointType.FootLeft]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "FootlLeft", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.AnkleLeft];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.AnkleLeft]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "ShinLeft", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.KneeLeft];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.KneeLeft]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "ThighLeft", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.HipLeft];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.HipLeft]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "HipLeft", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.FootRight];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.FootRight]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "FootlRight", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.AnkleRight];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.AnkleRight]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "ShinRight", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.KneeRight];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.KneeRight]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "ThighRight", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.HipRight];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.HipRight]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "HipRight", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.ThumbLeft];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.ThumbLeft]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "ThumbLeft", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.HandTipLeft];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.HandTipLeft]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "FingersLeft", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.HandLeft];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.HandLeft]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "HandLeft", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.WristLeft];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.WristLeft]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "ForarmLeft", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.ElbowLeft];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.ElbowLeft]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "BicepLeft", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.ShoulderLeft];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.ShoulderLeft]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "ShoulderLeft", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.ThumbRight];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.ThumbRight]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "ThumbRight", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.HandTipRight];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.HandTipRight]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "FingersRight", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.HandRight];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.HandRight]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "HandRight", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.WristRight];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.WristRight]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "ForarmRight", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.ElbowRight];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.ElbowRight]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "BicepRight", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.ShoulderRight];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.ShoulderRight]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "ShoulderRight", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.SpineBase];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.SpineBase]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "Stomach", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.SpineMid];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.SpineMid]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "Chest", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.SpineShoulder];
+         targetJoint = body.Joints[_BoneMap[Kinect.JointType.SpineShoulder]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "Neck", start, end);
+
+        sourceJoint = body.Joints[Kinect.JointType.Neck];
+        targetJoint = body.Joints[_BoneMap[Kinect.JointType.Neck]];
+
+        start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
+        end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCylinder(model, "Head", start, end);
 
     }
     
@@ -224,4 +450,26 @@ public class BodySourceView : MonoBehaviour
     {
         return new Vector3(joint.Position.X, joint.Position.Y, -joint.Position.Z);
     }
+
+    private void CreateCylinder(GameObject parent, string name)
+    {
+
+        GameObject cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+
+        cylinder.name = name;
+        cylinder.transform.parent = parent.transform;
+
+    }
+
+    private void UpdateCylinder(GameObject parent, string name, Vector3 start, Vector3 end)
+    {
+
+        GameObject cylinder = parent.transform.Find(name).gameObject;
+        Vector3 position = end - start;
+
+        cylinder.transform.localPosition = start + (position / 2);
+        cylinder.transform.localScale = new Vector3(0.03f, position.magnitude, 0.03f);
+
+    }
+
 }
