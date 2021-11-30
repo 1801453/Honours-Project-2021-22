@@ -160,7 +160,7 @@ public class BodySourceView : MonoBehaviour
 
         GameObject model = new GameObject("Model:" + id);
 
-        model.transform.eulerAngles = offsetObject.transform.eulerAngles;
+        model.transform.SetParent(offsetObject.transform);
 
         CreateCylinder(model, "FootlLeft");
         CreateCylinder(model, "ShinLeft");
@@ -225,7 +225,7 @@ public class BodySourceView : MonoBehaviour
             if (target.HasValue)
             {
 
-                lr.SetPosition(0, jointObj.localPosition + offsetObject.transform.position);
+                lr.SetPosition(0, jointObj.position);
                 lr.SetPosition(1, (Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(target.Value)) + offsetObject.transform.position);
                 lr.SetColors(GetColorForState (source.TrackingState), GetColorForState(target.Value.TrackingState));
 
@@ -236,8 +236,6 @@ public class BodySourceView : MonoBehaviour
 
         GameObject model = GameObject.Find("Model:" + body.TrackingId);
         Vector3 start, end;
-
-        model.transform.position = offsetObject.transform.position;
 
         Kinect.Joint sourceJoint = body.Joints[Kinect.JointType.FootLeft];
         Kinect.Joint targetJoint = body.Joints[_BoneMap[Kinect.JointType.FootLeft]];
