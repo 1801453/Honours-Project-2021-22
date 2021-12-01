@@ -243,7 +243,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "FootlLeft", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "FootlLeft", start, end, 0.07f, 0.05f);
 
         sourceJoint = body.Joints[Kinect.JointType.AnkleLeft];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.AnkleLeft]];
@@ -251,7 +251,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "ShinLeft", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "ShinLeft", start, end, 0.1f, 0.07f);
 
         sourceJoint = body.Joints[Kinect.JointType.KneeLeft];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.KneeLeft]];
@@ -259,7 +259,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "ThighLeft", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "ThighLeft", start, end, 0.1f, 0.07f);
 
         sourceJoint = body.Joints[Kinect.JointType.HipLeft];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.HipLeft]];
@@ -267,7 +267,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "HipLeft", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "HipLeft", start, end, 0.1f, 0.05f);
 
         sourceJoint = body.Joints[Kinect.JointType.FootRight];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.FootRight]];
@@ -275,7 +275,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "FootlRight", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "FootlRight", start, end, 0.07f, 0.05f);
 
         sourceJoint = body.Joints[Kinect.JointType.AnkleRight];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.AnkleRight]];
@@ -283,7 +283,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "ShinRight", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "ShinRight", start, end, 0.1f, 0.07f);
 
         sourceJoint = body.Joints[Kinect.JointType.KneeRight];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.KneeRight]];
@@ -291,7 +291,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "ThighRight", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "ThighRight", start, end, 0.1f, 0.07f);
 
         sourceJoint = body.Joints[Kinect.JointType.HipRight];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.HipRight]];
@@ -299,7 +299,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "HipRight", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "HipRight", start, end, 0.1f, 0.05f);
 
         sourceJoint = body.Joints[Kinect.JointType.ThumbLeft];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.ThumbLeft]];
@@ -307,7 +307,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "ThumbLeft", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "ThumbLeft", start, end, 0.05f, 0.05f);
 
         sourceJoint = body.Joints[Kinect.JointType.HandTipLeft];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.HandTipLeft]];
@@ -315,7 +315,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "FingersLeft", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "FingersLeft", start, end, 0.05f, 0.05f);
 
         sourceJoint = body.Joints[Kinect.JointType.HandLeft];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.HandLeft]];
@@ -323,7 +323,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "HandLeft", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "HandLeft", start, end, 0.06f, 0.05f);
 
         sourceJoint = body.Joints[Kinect.JointType.WristLeft];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.WristLeft]];
@@ -331,7 +331,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "ForarmLeft", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "ForarmLeft", start, end, 0.07f, 0.05f);
 
         sourceJoint = body.Joints[Kinect.JointType.ElbowLeft];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.ElbowLeft]];
@@ -339,7 +339,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "BicepLeft", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "BicepLeft", start, end, 0.07f, 0.05f);
 
         sourceJoint = body.Joints[Kinect.JointType.ShoulderLeft];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.ShoulderLeft]];
@@ -347,7 +347,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "ShoulderLeft", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "ShoulderLeft", start, end, 0.1f, 0.05f);
 
         sourceJoint = body.Joints[Kinect.JointType.ThumbRight];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.ThumbRight]];
@@ -355,7 +355,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "ThumbRight", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "ThumbRight", start, end, 0.05f, 0.05f);
 
         sourceJoint = body.Joints[Kinect.JointType.HandTipRight];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.HandTipRight]];
@@ -363,7 +363,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "FingersRight", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "FingersRight", start, end, 0.05f, 0.05f);
 
         sourceJoint = body.Joints[Kinect.JointType.HandRight];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.HandRight]];
@@ -371,7 +371,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "HandRight", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "HandRight", start, end, 0.06f, 0.05f);
 
         sourceJoint = body.Joints[Kinect.JointType.WristRight];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.WristRight]];
@@ -379,7 +379,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "ForarmRight", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "ForarmRight", start, end, 0.07f, 0.05f);
 
         sourceJoint = body.Joints[Kinect.JointType.ElbowRight];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.ElbowRight]];
@@ -387,7 +387,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "BicepRight", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "BicepRight", start, end, 0.07f, 0.05f);
 
         sourceJoint = body.Joints[Kinect.JointType.ShoulderRight];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.ShoulderRight]];
@@ -395,7 +395,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "ShoulderRight", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "ShoulderRight", start, end, 0.1f, 0.05f);
 
         sourceJoint = body.Joints[Kinect.JointType.SpineBase];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.SpineBase]];
@@ -403,7 +403,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "Stomach", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "Stomach", start, end, 0.3f, 0.1f);
 
         sourceJoint = body.Joints[Kinect.JointType.SpineMid];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.SpineMid]];
@@ -411,7 +411,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "Chest", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "Chest", start, end, 0.3f, 0.1f);
 
         sourceJoint = body.Joints[Kinect.JointType.SpineShoulder];
          targetJoint = body.Joints[_BoneMap[Kinect.JointType.SpineShoulder]];
@@ -419,7 +419,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "Neck", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "Neck", start, end, 0.05f, 0.05f);
 
         sourceJoint = body.Joints[Kinect.JointType.Neck];
         targetJoint = body.Joints[_BoneMap[Kinect.JointType.Neck]];
@@ -427,7 +427,7 @@ public class BodySourceView : MonoBehaviour
         start = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -offsetObject.transform.eulerAngles.y, 0) * GetVector3FromJoint(targetJoint);
 
-        UpdateCylinder(model, "Head", start, end, 0.03f, 0.03f);
+        UpdateCylinder(model, "Head", start, end, 0.05f, 0.05f);
 
     }
     
