@@ -18,6 +18,16 @@ public class BodySourceView : MonoBehaviour
 
     ulong playerID;
     float timer = 0;
+
+    struct Offsets
+    {
+
+        public string name;
+        public Vector3 offset, endPos;
+
+    }
+
+    Offsets[] offsets = new Offsets[24];
     
     private Dictionary<Kinect.JointType, Kinect.JointType> _BoneMap = new Dictionary<Kinect.JointType, Kinect.JointType>()
     {
@@ -121,6 +131,9 @@ public class BodySourceView : MonoBehaviour
 
                     if (trackingId == playerID) { playerID = 0; }
 
+                    Destroy(GameObject.Find("Body:" + trackingId));
+                    Destroy(GameObject.Find("Model:" + trackingId));
+
                 }
 
             }
@@ -151,51 +164,130 @@ public class BodySourceView : MonoBehaviour
         GameObject body = new GameObject("Body:" + id);
 
         body.transform.SetParent(offsetObject.transform);
-        
-        for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
-        {
-
-            GameObject jointObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            
-            LineRenderer lr = jointObj.AddComponent<LineRenderer>();
-            lr.SetVertexCount(2);
-            lr.material = BoneMaterial;
-            lr.SetWidth(0.05f, 0.05f);
-            
-            jointObj.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);
-            jointObj.name = jt.ToString();
-            jointObj.transform.parent = body.transform;
-
-        }
 
         GameObject model = new GameObject("Model:" + id);
 
         model.transform.SetParent(offsetObject.transform);
 
-        CreateCapsule(model, "FootlLeft");
-        CreateCapsule(model, "ShinLeft");
-        CreateCapsule(model, "ThighLeft");
-        CreateCapsule(model, "HipLeft");
-        CreateCapsule(model, "FootlRight");
-        CreateCapsule(model, "ShinRight");
-        CreateCapsule(model, "ThighRight");
-        CreateCapsule(model, "HipRight");
-        CreateCapsule(model, "ThumbLeft");
-        CreateCapsule(model, "FingersLeft");
-        CreateCapsule(model, "HandLeft");
-        CreateCapsule(model, "ForarmLeft");
-        CreateCapsule(model, "BicepLeft");
-        CreateCapsule(model, "ShoulderLeft");
-        CreateCapsule(model, "ThumbRight");
-        CreateCapsule(model, "FingersRight");
-        CreateCapsule(model, "HandRight");
-        CreateCapsule(model, "ForarmRight");
-        CreateCapsule(model, "BicepRight");
-        CreateCapsule(model, "ShoulderRight");
-        CreateCapsule(model, "Stomach");
-        CreateCapsule(model, "Chest");
-        CreateCapsule(model, "Neck");
         CreateCapsule(model, "Head");
+
+        offsets[0].name = "Head";
+        offsets[0].offset = new Vector3(0, 0, 0);
+
+            CreateCapsule(model, "Neck");
+
+            offsets[1].name = "Neck";
+            offsets[1].offset = new Vector3(0, 0, 0);
+
+                CreateCapsule(model, "ShoulderRight");
+
+                offsets[2].name = "ShoulderRight";
+                offsets[2].offset = new Vector3(0, 0, 0);
+
+                    CreateCapsule(model, "BicepRight");
+
+                    offsets[3].name = "BicepRight";
+                    offsets[3].offset = new Vector3(0, 0, 0);
+
+                        CreateCapsule(model, "ForarmRight");
+
+                        offsets[4].name = "ForarmRight";
+                        offsets[4].offset = new Vector3(0, 0, 0);
+
+                            CreateCapsule(model, "HandRight");
+
+                            offsets[5].name = "HandRight";
+                            offsets[5].offset = new Vector3(0, 0, 0);
+
+                                CreateCapsule(model, "FingersRight");
+
+                                offsets[6].name = "FingersRight";
+                                offsets[6].offset = new Vector3(0, 0, 0);
+
+                                CreateCapsule(model, "ThumbRight");
+
+                                offsets[7].name = "ThumbRight";
+                                offsets[7].offset = new Vector3(0, 0, 0);
+
+                CreateCapsule(model, "ShoulderLeft");
+
+                offsets[8].name = "ShoulderLeft";
+                offsets[8].offset = new Vector3(0, 0, 0);
+
+                    CreateCapsule(model, "BicepLeft");
+
+                    offsets[9].name = "BicepLeft";
+                    offsets[9].offset = new Vector3(0, 0, 0);
+
+                        CreateCapsule(model, "ForarmLeft");
+
+                        offsets[10].name = "ForarmLeft";
+                        offsets[10].offset = new Vector3(0, 0, 0);
+
+                            CreateCapsule(model, "HandLeft");
+
+                            offsets[11].name = "HandLeft";
+                            offsets[11].offset = new Vector3(0, 0, 0);
+
+                                CreateCapsule(model, "FingersLeft");
+
+                                offsets[12].name = "FingersLeft";
+                                offsets[12].offset = new Vector3(0, 0, 0);
+
+                                CreateCapsule(model, "ThumbLeft");
+
+                                offsets[13].name = "ThumbLeft";
+                                offsets[13].offset = new Vector3(0, 0, 0);
+
+                CreateCapsule(model, "Chest");
+
+                offsets[14].name = "Chest";
+                offsets[14].offset = new Vector3(0, 0, 0);
+
+                    CreateCapsule(model, "Stomach");
+
+                    offsets[15].name = "Stomach";
+                    offsets[15].offset = new Vector3(0, 0, 0);
+
+                        CreateCapsule(model, "HipRight");
+
+                        offsets[16].name = "HipRight";
+                        offsets[16].offset = new Vector3(0, 0, 0);
+
+                            CreateCapsule(model, "ThighRight");
+
+                            offsets[17].name = "ThighRight";
+                            offsets[17].offset = new Vector3(0, 0, 0);
+
+                                CreateCapsule(model, "ShinRight");
+
+                                offsets[18].name = "ShinRight";
+                                offsets[18].offset = new Vector3(0, 0, 0);
+
+                                    CreateCapsule(model, "FootRight");
+
+                                    offsets[19].name = "FootRight";
+                                    offsets[19].offset = new Vector3(0, 0, 0);
+
+                        CreateCapsule(model, "HipLeft");
+
+                        offsets[20].name = "HipLeft";
+                        offsets[20].offset = new Vector3(0, 0, 0);
+
+                            CreateCapsule(model, "ThighLeft");
+
+                            offsets[21].name = "ThighLeft";
+                            offsets[21].offset = new Vector3(0, 0, 0);
+
+                                CreateCapsule(model, "ShinLeft");
+
+                                offsets[22].name = "ShinLeft";
+                                offsets[22].offset = new Vector3(0, 0, 0);
+
+                                    CreateCapsule(model, "FootLeft");
+
+                                    offsets[23].name = "FootLeft";
+                                    offsets[23].offset = new Vector3(0, 0, 0);
 
         return body;
 
@@ -204,241 +296,261 @@ public class BodySourceView : MonoBehaviour
     private void RefreshBodyObject(Kinect.Body body, GameObject bodyObject)
     {
 
-        for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
-        {
-
-            Kinect.Joint source = body.Joints[jt];
-            Kinect.Joint? target = null;
-            
-            if(_BoneMap.ContainsKey(jt)) { target = body.Joints[_BoneMap[jt]]; }
-            
-            Transform jointObj = bodyObject.transform.Find(jt.ToString());
-            jointObj.localPosition = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(source);
-            LineRenderer lr = jointObj.GetComponent<LineRenderer>();
-
-            if (body.TrackingId == playerID)
-            {
-
-                if (jt == Kinect.JointType.Head)
-                {
-
-                    Vector3 offset;
-
-                    offset = camera.transform.position - jointObj.position + offsetObject.transform.position;
-                    
-                    offsetObject.transform.position = offset;
-
-                }
-
-            }
-
-            if (target.HasValue)
-            {
-
-                lr.SetPosition(0, jointObj.position);
-                lr.SetPosition(1, (Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(target.Value)) + offsetObject.transform.position);
-                lr.SetColors(GetColorForState (source.TrackingState), GetColorForState(target.Value.TrackingState));
-
-            }
-            else { lr.enabled = false; }
-
-        }
-
-        // Create capsule rotations to connect tracked joints
+        // Find the model being refreshed
         GameObject model = GameObject.Find("Model:" + body.TrackingId);
         Vector3 start, end;
 
-        Kinect.Joint sourceJoint = body.Joints[Kinect.JointType.FootLeft];
-        Kinect.Joint targetJoint = body.Joints[_BoneMap[Kinect.JointType.FootLeft]];
+        Kinect.Joint sourceJoint = body.Joints[Kinect.JointType.Neck];
+        Kinect.Joint targetJoint = body.Joints[_BoneMap[Kinect.JointType.Neck]];
 
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "FootlLeft", start, end, 0.07f, 0.05f);
-
-        sourceJoint = body.Joints[Kinect.JointType.AnkleLeft];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.AnkleLeft]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "ShinLeft", start, end, 0.1f, 0.07f);
-
-        sourceJoint = body.Joints[Kinect.JointType.KneeLeft];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.KneeLeft]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "ThighLeft", start, end, 0.1f, 0.07f);
-
-        sourceJoint = body.Joints[Kinect.JointType.HipLeft];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.HipLeft]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "HipLeft", start, end, 0.1f, 0.05f);
-
-        sourceJoint = body.Joints[Kinect.JointType.FootRight];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.FootRight]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "FootlRight", start, end, 0.07f, 0.05f);
-
-        sourceJoint = body.Joints[Kinect.JointType.AnkleRight];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.AnkleRight]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "ShinRight", start, end, 0.1f, 0.07f);
-
-        sourceJoint = body.Joints[Kinect.JointType.KneeRight];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.KneeRight]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "ThighRight", start, end, 0.1f, 0.07f);
-
-        sourceJoint = body.Joints[Kinect.JointType.HipRight];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.HipRight]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "HipRight", start, end, 0.1f, 0.05f);
-
-        sourceJoint = body.Joints[Kinect.JointType.ThumbLeft];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.ThumbLeft]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "ThumbLeft", start, end, 0.05f, 0.05f);
-
-        sourceJoint = body.Joints[Kinect.JointType.HandTipLeft];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.HandTipLeft]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "FingersLeft", start, end, 0.05f, 0.05f);
-
-        sourceJoint = body.Joints[Kinect.JointType.HandLeft];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.HandLeft]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "HandLeft", start, end, 0.06f, 0.05f);
-
-        sourceJoint = body.Joints[Kinect.JointType.WristLeft];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.WristLeft]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "ForarmLeft", start, end, 0.07f, 0.05f);
-
-        sourceJoint = body.Joints[Kinect.JointType.ElbowLeft];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.ElbowLeft]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "BicepLeft", start, end, 0.07f, 0.05f);
-
-        sourceJoint = body.Joints[Kinect.JointType.ShoulderLeft];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.ShoulderLeft]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "ShoulderLeft", start, end, 0.1f, 0.05f);
-
-        sourceJoint = body.Joints[Kinect.JointType.ThumbRight];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.ThumbRight]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "ThumbRight", start, end, 0.05f, 0.05f);
-
-        sourceJoint = body.Joints[Kinect.JointType.HandTipRight];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.HandTipRight]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "FingersRight", start, end, 0.05f, 0.05f);
-
-        sourceJoint = body.Joints[Kinect.JointType.HandRight];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.HandRight]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "HandRight", start, end, 0.06f, 0.05f);
-
-        sourceJoint = body.Joints[Kinect.JointType.WristRight];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.WristRight]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "ForarmRight", start, end, 0.07f, 0.05f);
-
-        sourceJoint = body.Joints[Kinect.JointType.ElbowRight];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.ElbowRight]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "BicepRight", start, end, 0.07f, 0.05f);
-
-        sourceJoint = body.Joints[Kinect.JointType.ShoulderRight];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.ShoulderRight]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "ShoulderRight", start, end, 0.1f, 0.05f);
-
-        sourceJoint = body.Joints[Kinect.JointType.SpineBase];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.SpineBase]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "Stomach", start, end, 0.3f, 0.1f);
-
-        sourceJoint = body.Joints[Kinect.JointType.SpineMid];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.SpineMid]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "Chest", start, end, 0.3f, 0.1f);
-
-        sourceJoint = body.Joints[Kinect.JointType.SpineShoulder];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.SpineShoulder]];
-
-        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
-        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
-
-        UpdateCapsule(model, "Neck", start, end, 0.05f, 0.05f);
-
-        sourceJoint = body.Joints[Kinect.JointType.Neck];
-        targetJoint = body.Joints[_BoneMap[Kinect.JointType.Neck]];
-
+        // Refresh the head
         start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
         end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
 
         UpdateCapsule(model, "Head", start, end, 0.05f, 0.05f);
+
+            // Refresh the neck, child of head
+            sourceJoint = body.Joints[Kinect.JointType.SpineShoulder];
+            targetJoint = body.Joints[_BoneMap[Kinect.JointType.SpineShoulder]];
+
+            start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+            end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+
+        UpdateCapsule(model, "Neck", start, end, 0.05f, 0.05f);
+        end = offsets[0].endPos;
+        Debug.Log((model.transform.Find("Head").rotation * new Vector3(0, 1 * model.transform.Find("Head").localScale.y, 0)));
+            UpdateCapsule(model, "Neck", start, end, 0.05f, 0.05f);
+
+                // Refresh the right arm
+                // Refresh the shoulder, child of neck
+                sourceJoint = body.Joints[Kinect.JointType.ShoulderRight];
+                targetJoint = body.Joints[_BoneMap[Kinect.JointType.ShoulderRight]];
+
+                start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                end = offsets[1].endPos;
+
+                UpdateCapsule(model, "ShoulderRight", start, end, 0.1f, 0.05f);
+
+                    // Refresh bicep, child of shoulder
+                    sourceJoint = body.Joints[Kinect.JointType.ElbowRight];
+                    targetJoint = body.Joints[_BoneMap[Kinect.JointType.ElbowRight]];
+
+                    start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                    end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                    end = offsets[2].endPos;
+
+                    UpdateCapsule(model, "BicepRight", start, end, 0.07f, 0.05f);
+
+                        // Refresh forarm, child of bicep
+                        sourceJoint = body.Joints[Kinect.JointType.WristRight];
+                        targetJoint = body.Joints[_BoneMap[Kinect.JointType.WristRight]];
+
+                        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                        end = offsets[3].endPos;
+
+                        UpdateCapsule(model, "ForarmRight", start, end, 0.07f, 0.05f);
+
+                            // Refresh hand, child of forarm
+                            sourceJoint = body.Joints[Kinect.JointType.HandRight];
+                            targetJoint = body.Joints[_BoneMap[Kinect.JointType.HandRight]];
+
+                            start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                            end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                            end = offsets[4].endPos;
+
+                            UpdateCapsule(model, "HandRight", start, end, 0.06f, 0.05f);
+
+                                // Refresh fingers, child of hand
+                                sourceJoint = body.Joints[Kinect.JointType.HandTipRight];
+                                targetJoint = body.Joints[_BoneMap[Kinect.JointType.HandTipRight]];
+
+                                start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                                end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                                end = offsets[5].endPos;
+
+                                UpdateCapsule(model, "FingersRight", start, end, 0.05f, 0.05f);
+
+                                // Refresh thumb, child of hand
+                                sourceJoint = body.Joints[Kinect.JointType.ThumbRight];
+                                targetJoint = body.Joints[_BoneMap[Kinect.JointType.ThumbRight]];
+
+                                start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                                end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                                end = offsets[5].endPos;
+
+                                UpdateCapsule(model, "ThumbRight", start, end, 0.05f, 0.05f);
+
+                // Refresh left arm
+                // Refresh shoulder, child of neck
+                sourceJoint = body.Joints[Kinect.JointType.ShoulderLeft];
+                targetJoint = body.Joints[_BoneMap[Kinect.JointType.ShoulderLeft]];
+
+                start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                end = offsets[1].endPos;
+
+                UpdateCapsule(model, "ShoulderLeft", start, end, 0.1f, 0.05f);
+
+                    // Refresh bicep, child of shoulder
+                    sourceJoint = body.Joints[Kinect.JointType.ElbowLeft];
+                    targetJoint = body.Joints[_BoneMap[Kinect.JointType.ElbowLeft]];
+
+                    start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                    end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                    end = offsets[8].endPos;
+
+                    UpdateCapsule(model, "BicepLeft", start, end, 0.07f, 0.05f);
+
+                        // Refresh forarm, child of bicep
+                        sourceJoint = body.Joints[Kinect.JointType.WristLeft];
+                        targetJoint = body.Joints[_BoneMap[Kinect.JointType.WristLeft]];
+
+                        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                        end = offsets[9].endPos;
+
+                        UpdateCapsule(model, "ForarmLeft", start, end, 0.07f, 0.05f);
+
+                            // Refresh hand, child of forarm
+                            sourceJoint = body.Joints[Kinect.JointType.HandLeft];
+                            targetJoint = body.Joints[_BoneMap[Kinect.JointType.HandLeft]];
+
+                            start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                            end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                            end = offsets[10].endPos;
+
+                            UpdateCapsule(model, "HandLeft", start, end, 0.06f, 0.05f);
+
+                                // Refresh fingers, child of hand
+                                sourceJoint = body.Joints[Kinect.JointType.HandTipLeft];
+                                targetJoint = body.Joints[_BoneMap[Kinect.JointType.HandTipLeft]];
+
+                                start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                                end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                                end = offsets[11].endPos;
+
+                                UpdateCapsule(model, "FingersLeft", start, end, 0.05f, 0.05f);
+
+                                // Refresh thumb, child of hand
+                                sourceJoint = body.Joints[Kinect.JointType.ThumbLeft];
+                                targetJoint = body.Joints[_BoneMap[Kinect.JointType.ThumbLeft]];
+
+                                start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                                end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                                end = offsets[11].endPos;
+
+                                UpdateCapsule(model, "ThumbLeft", start, end, 0.05f, 0.05f);
+
+                // Refresh chest, child of neck
+                sourceJoint = body.Joints[Kinect.JointType.SpineMid];
+                targetJoint = body.Joints[_BoneMap[Kinect.JointType.SpineMid]];
+
+                start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                end = offsets[1].endPos;
+
+                 UpdateCapsule(model, "Chest", start, end, 0.3f, 0.1f);
+
+                    // Refresh stomach, child of chest
+                    sourceJoint = body.Joints[Kinect.JointType.SpineBase];
+                    targetJoint = body.Joints[_BoneMap[Kinect.JointType.SpineBase]];
+
+                    start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                    end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                    end = offsets[14].endPos;
+
+                    UpdateCapsule(model, "Stomach", start, end, 0.3f, 0.1f);
+
+                        // Refresh right leg
+                        // Refresh hip, child of stomach
+                        sourceJoint = body.Joints[Kinect.JointType.HipRight];
+                        targetJoint = body.Joints[_BoneMap[Kinect.JointType.HipRight]];
+
+                        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                        end = offsets[15].endPos;
+
+                        UpdateCapsule(model, "HipRight", start, end, 0.1f, 0.05f);
+
+                            // Refresh thigh, child of hip
+                            sourceJoint = body.Joints[Kinect.JointType.KneeRight];
+                            targetJoint = body.Joints[_BoneMap[Kinect.JointType.KneeRight]];
+
+                            start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                            end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                            end = offsets[16].endPos;
+
+                            UpdateCapsule(model, "ThighRight", start, end, 0.1f, 0.07f);
+
+                                // Refresh shin, child of thigh
+                                sourceJoint = body.Joints[Kinect.JointType.AnkleRight];
+                                targetJoint = body.Joints[_BoneMap[Kinect.JointType.AnkleRight]];
+
+                                start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                                end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                                end = offsets[17].endPos;
+
+                                UpdateCapsule(model, "ShinRight", start, end, 0.1f, 0.07f);
+
+                                    // Refresh foot, child of shin
+                                    sourceJoint = body.Joints[Kinect.JointType.FootRight];
+                                    targetJoint = body.Joints[_BoneMap[Kinect.JointType.FootRight]];
+
+                                    start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                                    end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                                    end = offsets[18].endPos;
+
+                                    UpdateCapsule(model, "FootRight", start, end, 0.07f, 0.05f); 
+
+                    // Refresh left leg
+                    // Refresh hip, child of stomach
+                    sourceJoint = body.Joints[Kinect.JointType.HipLeft];
+                    targetJoint = body.Joints[_BoneMap[Kinect.JointType.HipLeft]];
+
+                    start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                    end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                    end = offsets[15].endPos;
+
+                    UpdateCapsule(model, "HipLeft", start, end, 0.1f, 0.05f);
+
+                        // Refresh thigh, child of hip
+                        sourceJoint = body.Joints[Kinect.JointType.KneeLeft];
+                        targetJoint = body.Joints[_BoneMap[Kinect.JointType.KneeLeft]];
+
+                        start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                        end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                        end = offsets[20].endPos;
+
+                        UpdateCapsule(model, "ThighLeft", start, end, 0.1f, 0.07f);
+
+                            // Refresh shin, child of thigh
+                            sourceJoint = body.Joints[Kinect.JointType.AnkleLeft];
+                            targetJoint = body.Joints[_BoneMap[Kinect.JointType.AnkleLeft]];
+
+                            start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                            end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                            end = offsets[21].endPos;
+
+                            UpdateCapsule(model, "ShinLeft", start, end, 0.1f, 0.07f); 
+        
+                                // Refresh foot, child of shin
+                                sourceJoint = body.Joints[Kinect.JointType.FootLeft];
+                                targetJoint = body.Joints[_BoneMap[Kinect.JointType.FootLeft]];
+
+                                start = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(sourceJoint);
+                                end = Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(targetJoint);
+                                end = offsets[22].endPos;
+
+                                UpdateCapsule(model, "FootLeft", start, end, 0.07f, 0.05f);
+
+        // Set the offset of the body
+        Vector3 offset;
+
+        offset = camera.transform.position - model.transform.Find("Head").position + offsetObject.transform.position;
+
+        offsetObject.transform.position = offset;
 
         // Rotate chest and stomach to face the correct direction
         Vector3 connections, forward, rotation;
@@ -497,11 +609,44 @@ public class BodySourceView : MonoBehaviour
         GameObject capsule = parent.transform.Find(name).gameObject;
         Vector3 length;
 
-        length = end - start;
+        int id = 0;
+        bool update;
+        float lengthMag;
 
-        capsule.transform.localPosition = start + (length / 2);
-        capsule.transform.localScale = new Vector3(scaleX, (length.magnitude / 4) * 2.5f, scaleZ);
-        capsule.transform.rotation = Quaternion.FromToRotation(new Vector3(0, 1, 0), length);
+        for (int i = 0; i < 24; i++)
+        {
+
+            if (offsets[i].name == name)
+            {
+
+                id = i;
+                i = 24;
+
+            }
+
+        }
+
+        update = true;
+        length = end - start;
+        lengthMag = length.magnitude;
+
+        if (offsets[id].offset != new Vector3(0, 0, 0) && offsets[id].offset != length)
+        {
+
+            
+
+        }
+
+        if (update)
+        {
+
+            capsule.transform.localPosition = end - (length / 2);
+            capsule.transform.localScale = new Vector3(scaleX, (lengthMag / 4) * 2.5f, scaleZ);
+            capsule.transform.rotation = Quaternion.FromToRotation(new Vector3(0, 1, 0), length);
+
+        }
+
+        offsets[id].endPos = start;
 
     }
 
