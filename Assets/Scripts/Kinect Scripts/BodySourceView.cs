@@ -17,6 +17,7 @@ public class BodySourceView : MonoBehaviour
     private Vector3 rotationalOffset;
 
     ulong playerID;
+    float timer = 0;
     
     private Dictionary<Kinect.JointType, Kinect.JointType> _BoneMap = new Dictionary<Kinect.JointType, Kinect.JointType>()
     {
@@ -53,80 +54,90 @@ public class BodySourceView : MonoBehaviour
     void Update () 
     {
 
-        if (BodySourceManager == null)
-        {
-            return;
-        }
-        
-        _BodyManager = BodySourceManager.GetComponent<BodySourceManager>();
 
-        if (_BodyManager == null)
-        {
-            return;
-        }
-        
-        Kinect.Body[] data = _BodyManager.GetData();
+        timer += Time.deltaTime;
 
-        if (data == null)
-        {
-            return;
-        }
-        
-        List<ulong> trackedIds = new List<ulong>();
-
-        foreach(var body in data)
+        if (timer >= 1.0f / 30.0f)
         {
 
-            if (body == null)  { continue;  }
-                
-            if(body.IsTracked) 
+            timer -= 1.0f / 30.0f;
+
+            if (BodySourceManager == null)
             {
-                
-                trackedIds.Add (body.TrackingId); 
+                return;
+            }
 
-                if (playerID == 0)
-                { 
-                    
-                    playerID = body.TrackingId;
+            _BodyManager = BodySourceManager.GetComponent<BodySourceManager>();
 
-                    rotationalOffset = new Vector3(0, camera.transform.eulerAngles.y + 90, 0);
-                
+            if (_BodyManager == null)
+            {
+                return;
+            }
+
+            Kinect.Body[] data = _BodyManager.GetData();
+
+            if (data == null)
+            {
+                return;
+            }
+
+            List<ulong> trackedIds = new List<ulong>();
+
+            foreach (var body in data)
+            {
+
+                if (body == null) { continue; }
+
+                if (body.IsTracked)
+                {
+
+                    trackedIds.Add(body.TrackingId);
+
+                    if (playerID == 0)
+                    {
+
+                        playerID = body.TrackingId;
+
+                        rotationalOffset = new Vector3(0, camera.transform.eulerAngles.y + 90, 0);
+
+                    }
+
                 }
-            
-            }
-
-        }
-        
-        List<ulong> knownIds = new List<ulong>(_Bodies.Keys);
-        
-        // First delete untracked bodies
-        foreach(ulong trackingId in knownIds)
-        {
-
-            if(!trackedIds.Contains(trackingId))
-            {
-
-                Destroy(_Bodies[trackingId]);
-
-                _Bodies.Remove(trackingId);
-
-                if (trackingId == playerID) { playerID = 0; }
 
             }
 
-        }
+            List<ulong> knownIds = new List<ulong>(_Bodies.Keys);
 
-        foreach(var body in data)
-        {
-
-            if (body == null) { continue; }
-            
-            if(body.IsTracked)
+            // First delete untracked bodies
+            foreach (ulong trackingId in knownIds)
             {
 
-                if(!_Bodies.ContainsKey(body.TrackingId)) {  _Bodies[body.TrackingId] = CreateBodyObject(body.TrackingId); }
-                
-                RefreshBodyObject(body, _Bodies[body.TrackingId]);
+                if (!trackedIds.Contains(trackingId))
+                {
+
+                    Destroy(_Bodies[trackingId]);
+
+                    _Bodies.Remove(trackingId);
+
+                    if (trackingId == playerID) { playerID = 0; }
+
+                }
+
+            }
+
+            foreach (var body in data)
+            {
+
+                if (body == null) { continue; }
+
+                if (body.IsTracked)
+                {
+
+                    if (!_Bodies.ContainsKey(body.TrackingId)) { _Bodies[body.TrackingId] = CreateBodyObject(body.TrackingId); }
+
+                    RefreshBodyObject(body, _Bodies[body.TrackingId]);
+
+                }
 
             }
 
