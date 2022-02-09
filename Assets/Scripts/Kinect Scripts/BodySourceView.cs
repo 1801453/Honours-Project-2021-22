@@ -9,6 +9,14 @@ using static System.Math;
 public class BodySourceView : MonoBehaviour 
 {
 
+    struct Offsets
+    {
+
+        public string name;
+        public Vector3 offset, endPos;
+
+    }
+    
     public Material BoneMaterial;
     public GameObject BodySourceManager, offsetObject, camera;
     
@@ -17,15 +25,8 @@ public class BodySourceView : MonoBehaviour
     private Vector3 rotationalOffset;
 
     ulong playerID;
-    float timer = 0;
-
-    struct Offsets
-    {
-
-        public string name;
-        public Vector3 offset, endPos;
-
-    }
+    float timer = 0, leftGrabTimer = 0, rightGrabTimer = 0;
+    bool leftHolding = false, rightHolding = false;
 
     Offsets[] offsets = new Offsets[24];
     
@@ -289,6 +290,33 @@ public class BodySourceView : MonoBehaviour
                                     offsets[23].name = "FootLeft";
                                     offsets[23].offset = new Vector3(0, 0, 0);
 
+        if (id == playerID)
+        {
+
+            GameObject trigger = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            Rigidbody rigidbody = trigger.AddComponent<Rigidbody>();
+            Collider collider = trigger.GetComponent<Collider>();
+            MeshRenderer renderer = trigger.GetComponent<MeshRenderer>();
+
+            trigger.name = "FingersLeftTrigger";
+            trigger.transform.parent = model.transform.Find("FingersLeft");
+            rigidbody.isKinematic = true;
+            collider.isTrigger = true;
+            renderer.enabled = false;
+            
+            trigger = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            rigidbody = trigger.AddComponent<Rigidbody>();
+            collider = trigger.GetComponent<Collider>();
+            renderer = trigger.GetComponent<MeshRenderer>();
+
+            trigger.name = "FingersRightTrigger";
+            trigger.transform.parent = model.transform.Find("FingersRight");
+            rigidbody.isKinematic = true;
+            collider.isTrigger = true;
+            renderer.enabled = false;
+
+        }
+
         return body;
 
     }
@@ -523,6 +551,37 @@ public class BodySourceView : MonoBehaviour
         rotation.y -= angle;
         model.transform.Find("Stomach").gameObject.transform.eulerAngles = rotation;
 
+        if (body.TrackingId == playerID)
+        {
+
+            float scaled;
+
+            float testValue = 0.046f;
+
+            scaled = model.transform.Find("FingersLeft").gameObject.transform.localScale.y;
+
+            if (scaled < testValue) {  }
+            else 
+            { 
+                
+                leftHolding = false;
+                leftGrabTimer = 0;
+            
+            }
+
+            scaled = model.transform.Find("FingersRight").gameObject.transform.localScale.y;
+
+            if (scaled < testValue) {  }
+            else 
+            { 
+                
+                rightHolding = false;
+                rightGrabTimer = 0;
+            
+            }
+
+        }
+
     }
     
     private static Color GetColorForState(Kinect.TrackingState state)
@@ -618,6 +677,65 @@ public class BodySourceView : MonoBehaviour
         capsule.transform.rotation = Quaternion.FromToRotation(new Vector3(0, 1, 0), length);
 
         offsets[id].endPos = start;
+
+    }
+
+    private void IsHolding(GameObject parent, string name)
+    {
+
+        bool holding;
+        float grabTimer;
+
+        float testValue = 1;
+
+        if (name == "FingersLeft") 
+        { 
+            
+            holding = leftHolding;
+
+            if (leftGrabTimer < testValue) { leftGrabTimer += Time.deltaTime; }
+
+            grabTimer = leftGrabTimer;
+        
+        }
+        else 
+        { 
+            
+            holding = rightHolding;
+
+            if (rightGrabTimer < testValue) { rightGrabTimer += Time.deltaTime; }
+
+            grabTimer = rightGrabTimer;
+
+        }
+
+        if (!holding && grabTimer < testValue)
+        {
+
+            GameObject[] objects;
+            Collider fingerCollider;
+
+            objects = GameObject.FindGameObjectsWithTag("Object");
+            fingerCollider = parent.transform.Find(name).transform.GetChild(0).GetComponent<Collider>();
+
+            for (int i = 0; i < objects.Length; i++)
+            {
+
+                Collider collider;
+
+                collider = objects[i].GetComponent<Collider>();
+
+                
+
+            }
+
+        }
+        else if (holding)
+        {
+
+
+
+        }
 
     }
 
