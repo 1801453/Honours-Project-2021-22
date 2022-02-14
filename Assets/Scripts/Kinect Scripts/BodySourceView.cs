@@ -20,9 +20,10 @@ public class BodySourceView : MonoBehaviour
     public Material BoneMaterial;
     public GameObject BodySourceManager, offsetObject, camera;
     
-    private Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
-    private BodySourceManager _BodyManager;
-    private Vector3 rotationalOffset;
+    Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
+    BodySourceManager _BodyManager;
+    Vector3 rotationalOffset, leftGrabbedOffset, rightGrabbedOffset;
+    GameObject leftGrabbedObject, rightGrabbedObject;
 
     ulong playerID;
     float timer = 0, leftGrabTimer = 0, rightGrabTimer = 0;
@@ -297,6 +298,7 @@ public class BodySourceView : MonoBehaviour
             Rigidbody rigidbody = trigger.AddComponent<Rigidbody>();
             Collider collider = trigger.GetComponent<Collider>();
             MeshRenderer renderer = trigger.GetComponent<MeshRenderer>();
+            FingerTrigger script = trigger.AddComponent<FingerTrigger>();
 
             trigger.name = "FingersLeftTrigger";
             trigger.transform.parent = model.transform.Find("FingersLeft");
@@ -308,6 +310,7 @@ public class BodySourceView : MonoBehaviour
             rigidbody = trigger.AddComponent<Rigidbody>();
             collider = trigger.GetComponent<Collider>();
             renderer = trigger.GetComponent<MeshRenderer>();
+            script = trigger.AddComponent<FingerTrigger>();
 
             trigger.name = "FingersRightTrigger";
             trigger.transform.parent = model.transform.Find("FingersRight");
@@ -560,10 +563,15 @@ public class BodySourceView : MonoBehaviour
 
             scaled = model.transform.Find("FingersLeft").gameObject.transform.localScale.y;
 
-            if (scaled < testValue) {  }
+            if (scaled < testValue) { IsHolding(model, "FingersLeft"); }
             else 
-            { 
-                
+            {
+
+                Rigidbody rigidbody = leftGrabbedObject.GetComponent<Rigidbody>();
+                FingerTrigger script = model.transform.Find("FingersLeft").transform.GetChild(0).gameObject.GetComponent<FingerTrigger>();
+
+                rigidbody.isKinematic = false;
+
                 leftHolding = false;
                 leftGrabTimer = 0;
             
@@ -571,13 +579,20 @@ public class BodySourceView : MonoBehaviour
 
             scaled = model.transform.Find("FingersRight").gameObject.transform.localScale.y;
 
-            if (scaled < testValue) {  }
+            if (scaled < testValue) { IsHolding(model, "FingersRight"); }
             else 
-            { 
-                
+            {
+
+                Rigidbody rigidbody = rightGrabbedObject.GetComponent<Rigidbody>();
+                FingerTrigger script = model.transform.Find("FingersRight").transform.GetChild(0).gameObject.GetComponent<FingerTrigger>();
+
+                rigidbody.isKinematic = false;
+
                 rightHolding = false;
                 rightGrabTimer = 0;
-            
+
+                if (!script.isChecking()) { script.setChecking(false); }
+
             }
 
         }
@@ -682,11 +697,18 @@ public class BodySourceView : MonoBehaviour
 
     private void IsHolding(GameObject parent, string name)
     {
-
+        
         bool holding;
-        float grabTimer;
+        float grabTimer; 
+        
+        GameObject fingerTriggerObject, grabbedObject;
+        Vector3 offset;
 
         float testValue = 1;
+
+        fingerTriggerObject = parent.transform.Find(name).transform.GetChild(0).gameObject;
+
+        FingerTrigger script = fingerTriggerObject.GetComponent<FingerTrigger>();
 
         if (name == "FingersLeft") 
         { 
@@ -696,6 +718,8 @@ public class BodySourceView : MonoBehaviour
             if (leftGrabTimer < testValue) { leftGrabTimer += Time.deltaTime; }
 
             grabTimer = leftGrabTimer;
+            offset = leftGrabbedOffset;
+            grabbedObject = leftGrabbedObject;
         
         }
         else 
@@ -706,26 +730,54 @@ public class BodySourceView : MonoBehaviour
             if (rightGrabTimer < testValue) { rightGrabTimer += Time.deltaTime; }
 
             grabTimer = rightGrabTimer;
+            offset = rightGrabbedOffset;
+            grabbedObject = rightGrabbedObject;
 
         }
 
         if (!holding && grabTimer < testValue)
         {
 
-            GameObject[] objects;
-            Collider fingerCollider;
+            if (!script.isChecking()) { script.setChecking(true); }
 
-            objects = GameObject.FindGameObjectsWithTag("Object");
-            fingerCollider = parent.transform.Find(name).transform.GetChild(0).GetComponent<Collider>();
-
-            for (int i = 0; i < objects.Length; i++)
+            if (script.isCollided())
             {
 
-                Collider collider;
+                grabbedObject = script.getGrabbed();
 
-                collider = objects[i].GetComponent<Collider>();
-
+                Rigidbody rigidbody = grabbedObject.GetComponent<Rigidbody>();
                 
+                rigidbody.isKinematic = true;
+
+                offset = grabbedObject.transform.position - fingerTriggerObject.transform.position;
+
+                if (name == "FingersLeft") 
+                {
+                    if (rightHolding && rightGrabbedObject == grabbedObject) { }
+                    else
+                    {
+
+                        leftGrabbedObject = grabbedObject;
+                        leftGrabbedOffset = offset;
+                        leftHolding = true;
+
+                    }
+                
+                }
+                else 
+                {
+
+                    if (leftHolding && leftGrabbedObject == grabbedObject) { }
+                    else
+                    {
+
+                        rightGrabbedObject = grabbedObject;
+                        rightGrabbedOffset = offset;
+                        rightHolding = true;
+
+                    }
+                
+                }
 
             }
 
@@ -733,7 +785,13 @@ public class BodySourceView : MonoBehaviour
         else if (holding)
         {
 
+            grabbedObject.transform.position = fingerTriggerObject.transform.position + offset;
 
+        }
+        else
+        {
+
+            if (!script.isChecking()) { script.setChecking(false); }
 
         }
 
