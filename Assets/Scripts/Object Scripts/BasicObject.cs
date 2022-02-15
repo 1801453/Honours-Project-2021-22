@@ -5,16 +5,22 @@ using UnityEngine;
 public class BasicObject : MonoBehaviour
 {
 
-    float despawnTimer;
+    float despawnTimer, kinectTimer;
+    bool kinematic;
 
-    Vector3 startLoc;
+    Vector3 startLoc, priorPos, velocity;
+    Rigidbody rigidbody;
 
     // Start is called before the first frame update
     void Start()
     {
 
         startLoc = this.transform.localPosition;
+        priorPos = this.transform.position;
+        rigidbody = this.GetComponent<Rigidbody>();
         despawnTimer = 0;
+        kinectTimer = 0;
+        kinematic = false;
 
     }
 
@@ -22,23 +28,74 @@ public class BasicObject : MonoBehaviour
     void Update()
     {
 
-        Vector3 position = this.transform.position;
+        float dt;
 
-        if (position.x < -1.5f)
+        dt = Time.deltaTime;
+        kinectTimer += dt;
+
+        if (rigidbody.isKinematic)
         {
 
-            despawnTimer += Time.deltaTime;
+            if (!kinematic) { kinematic = true; }
 
-            if (despawnTimer >= 10)
+            if (kinectTimer >= 1.0f / 30.0f)
             {
-
-                this.transform.localPosition = startLoc;
-                despawnTimer = 0;
+                Vector3 position = this.transform.position;
+                position = position - priorPos;
+                Debug.Log(position);
+                Debug.Log(kinectTimer);
+                velocity = position / kinectTimer;
+                Debug.Log(velocity);
+                rigidbody.velocity = velocity;
 
             }
 
         }
+        else
+        {
+
+            Vector3 position = this.transform.position;
+
+            if (position.x < -1.5f)
+            {
+
+                despawnTimer += dt;
+
+                if (despawnTimer >= 10)
+                {
+
+                    this.transform.localPosition = startLoc;
+                    despawnTimer = 0;
+                    rigidbody.velocity = new Vector3(0, 0, 0);
+
+                }
+
+            }
+
+            if (kinematic)
+            {
+
+                position = position - priorPos;
+                Debug.Log(position);
+                Debug.Log(kinectTimer);
+                velocity = position / kinectTimer;
+                Debug.Log(velocity);
+                rigidbody.velocity = velocity * 10;
+
+                kinematic = false;
+
+            }
+
+        }
+
+        if (kinectTimer >= 1.0f / 30.0f)
+        { 
+            
+            priorPos = this.transform.position;
+            kinectTimer = 0;
         
+        }
+
     }
 
 }

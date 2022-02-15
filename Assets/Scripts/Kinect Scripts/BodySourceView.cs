@@ -567,10 +567,17 @@ public class BodySourceView : MonoBehaviour
             else 
             {
 
-                Rigidbody rigidbody = leftGrabbedObject.GetComponent<Rigidbody>();
                 FingerTrigger script = model.transform.Find("FingersLeft").transform.GetChild(0).gameObject.GetComponent<FingerTrigger>();
 
-                rigidbody.isKinematic = false;
+                if (leftGrabbedObject)
+                {
+
+                    Rigidbody rigidbody = leftGrabbedObject.GetComponent<Rigidbody>();
+
+                    rigidbody.isKinematic = false;
+                    leftGrabbedObject = null;
+
+                }
 
                 leftHolding = false;
                 leftGrabTimer = 0;
@@ -583,10 +590,17 @@ public class BodySourceView : MonoBehaviour
             else 
             {
 
-                Rigidbody rigidbody = rightGrabbedObject.GetComponent<Rigidbody>();
                 FingerTrigger script = model.transform.Find("FingersRight").transform.GetChild(0).gameObject.GetComponent<FingerTrigger>();
 
-                rigidbody.isKinematic = false;
+                if (rightGrabbedObject)
+                {
+
+                    Rigidbody rigidbody = rightGrabbedObject.GetComponent<Rigidbody>();
+
+                    rigidbody.isKinematic = false;
+                    rightGrabbedObject = null;
+
+                }
 
                 rightHolding = false;
                 rightGrabTimer = 0;
@@ -726,7 +740,7 @@ public class BodySourceView : MonoBehaviour
         { 
             
             holding = rightHolding;
-
+            
             if (rightGrabTimer < testValue) { rightGrabTimer += Time.deltaTime; }
 
             grabTimer = rightGrabTimer;
@@ -753,6 +767,7 @@ public class BodySourceView : MonoBehaviour
 
                 if (name == "FingersLeft") 
                 {
+
                     if (rightHolding && rightGrabbedObject == grabbedObject) { }
                     else
                     {
@@ -762,6 +777,7 @@ public class BodySourceView : MonoBehaviour
                         leftHolding = true;
 
                     }
+
                 
                 }
                 else 
