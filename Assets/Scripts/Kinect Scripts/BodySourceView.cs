@@ -110,7 +110,7 @@ public class BodySourceView : MonoBehaviour
 
                         playerID = body.TrackingId;
 
-                        rotationalOffset = new Vector3(0, camera.transform.eulerAngles.y + 90, 0);
+                        rotationalOffset = new Vector3(0, camera.transform.eulerAngles.y + 90 + 90, 0);
 
                     }
 
@@ -557,13 +557,7 @@ public class BodySourceView : MonoBehaviour
         if (body.TrackingId == playerID)
         {
 
-            float scaled;
-
-            float testValue = 0.046f;
-
-            scaled = model.transform.Find("FingersLeft").gameObject.transform.localScale.y;
-
-            if (scaled < testValue) { IsHolding(model, "FingersLeft"); }
+            if (body.HandLeftState == Kinect.HandState.Closed) { IsHolding(model, "FingersLeft"); }
             else 
             {
 
@@ -581,12 +575,12 @@ public class BodySourceView : MonoBehaviour
 
                 leftHolding = false;
                 leftGrabTimer = 0;
-            
+
+                if (!script.isChecking()) { script.setChecking(false); }
+
             }
 
-            scaled = model.transform.Find("FingersRight").gameObject.transform.localScale.y;
-
-            if (scaled < testValue) { IsHolding(model, "FingersRight"); }
+            if (body.HandRightState == Kinect.HandState.Closed) { IsHolding(model, "FingersRight"); }
             else 
             {
 

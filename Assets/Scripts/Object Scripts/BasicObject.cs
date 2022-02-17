@@ -5,7 +5,7 @@ using UnityEngine;
 public class BasicObject : MonoBehaviour
 {
 
-    float despawnTimer, kinectTimer;
+    float despawnTimer, kinectTimer, velocityLockTimer;
     bool kinematic;
 
     Vector3 startLoc, priorPos, velocity;
@@ -17,9 +17,11 @@ public class BasicObject : MonoBehaviour
 
         startLoc = this.transform.localPosition;
         priorPos = this.transform.position;
-        rigidbody = this.GetComponent<Rigidbody>();
+        velocity = new Vector3(0, 0, 0);
+        rigidbody = this.gameObject.GetComponent<Rigidbody>();
         despawnTimer = 0;
         kinectTimer = 0;
+        velocityLockTimer = 0;
         kinematic = false;
 
     }
@@ -37,18 +39,6 @@ public class BasicObject : MonoBehaviour
         {
 
             if (!kinematic) { kinematic = true; }
-
-            if (kinectTimer >= 1.0f / 30.0f)
-            {
-                Vector3 position = this.transform.position;
-                position = position - priorPos;
-                Debug.Log(position);
-                Debug.Log(kinectTimer);
-                velocity = position / kinectTimer;
-                Debug.Log(velocity);
-                rigidbody.velocity = velocity;
-
-            }
 
         }
         else
@@ -80,8 +70,10 @@ public class BasicObject : MonoBehaviour
                 Debug.Log(kinectTimer);
                 velocity = position / kinectTimer;
                 Debug.Log(velocity);
-                rigidbody.velocity = velocity * 10;
+                rigidbody.AddForce(velocity, ForceMode.VelocityChange);
+                Debug.Log(rigidbody.velocity);
 
+                velocityLockTimer = 0;
                 kinematic = false;
 
             }
