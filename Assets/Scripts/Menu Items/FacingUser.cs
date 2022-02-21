@@ -30,14 +30,14 @@ public class FacingUser : MonoBehaviour
         direction = cameraPosition - myPosition;
 
         angle = (float)Math.Atan2(-direction.x, -direction.z);
-
+        
         offset = new Vector3(0, 0, -0.51f);
 
-        offset.x = (0 * (float)Math.Cos(-angle)) - (-0.51f * (float)Math.Sin(-angle));
-        offset.z = (0 * (float)Math.Sin(-angle)) + (-0.51f * (float)Math.Cos(-angle));
+        /*offset.x = (0 * (float)Math.Cos(-angle)) - (-0.51f * (float)Math.Sin(-angle));
+        offset.z = (0 * (float)Math.Sin(-angle)) + (-0.51f * (float)Math.Cos(-angle));*/
 
         angle = angle * (180 / (float)Math.PI);
-
+        Debug.Log(angle);
         rotation = new Vector3(90, angle + 180, 0);
 
         this.transform.eulerAngles = rotation;

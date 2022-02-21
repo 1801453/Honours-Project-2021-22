@@ -65,15 +65,10 @@ public class BasicObject : MonoBehaviour
 
             if (kinematic)
             {
-                Debug.Log(position);
-                Debug.Log(priorPos);
+
                 position = position - priorPos;
-                Debug.Log(position);
-                Debug.Log(kinectTimer + (1.0f / 30.0f));
-                velocity = position / (kinectTimer + (1.0f / 30.0f)) ;
-                Debug.Log(velocity);
+                velocity = position / (kinectTimer + (1.0f / 30.0f));
                 rigidbody.velocity = velocity;
-                Debug.Log(rigidbody.velocity);
 
                 velocityLockTimer = 0;
                 kinematic = false;
