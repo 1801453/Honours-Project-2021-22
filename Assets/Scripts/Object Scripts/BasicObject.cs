@@ -8,7 +8,7 @@ public class BasicObject : MonoBehaviour
     float despawnTimer, kinectTimer, velocityLockTimer;
     bool kinematic;
 
-    Vector3 startLoc, priorPos, velocity;
+    Vector3 startLoc, intermediatePos, priorPos, velocity;
     Rigidbody rigidbody;
 
     // Start is called before the first frame update
@@ -17,6 +17,7 @@ public class BasicObject : MonoBehaviour
 
         startLoc = this.transform.localPosition;
         priorPos = this.transform.position;
+        intermediatePos = priorPos;
         velocity = new Vector3(0, 0, 0);
         rigidbody = this.gameObject.GetComponent<Rigidbody>();
         despawnTimer = 0;
@@ -64,13 +65,14 @@ public class BasicObject : MonoBehaviour
 
             if (kinematic)
             {
-
+                Debug.Log(position);
+                Debug.Log(priorPos);
                 position = position - priorPos;
                 Debug.Log(position);
-                Debug.Log(kinectTimer);
-                velocity = position / kinectTimer;
+                Debug.Log(kinectTimer + (1.0f / 30.0f));
+                velocity = position / (kinectTimer + (1.0f / 30.0f)) ;
                 Debug.Log(velocity);
-                rigidbody.AddForce(velocity, ForceMode.VelocityChange);
+                rigidbody.velocity = velocity;
                 Debug.Log(rigidbody.velocity);
 
                 velocityLockTimer = 0;
@@ -81,9 +83,10 @@ public class BasicObject : MonoBehaviour
         }
 
         if (kinectTimer >= 1.0f / 30.0f)
-        { 
-            
-            priorPos = this.transform.position;
+        {
+
+            priorPos = intermediatePos;
+            intermediatePos = this.transform.position;
             kinectTimer = 0;
         
         }
