@@ -27,7 +27,7 @@ public class BodySourceView : MonoBehaviour
 
     ulong playerID;
     float timer = 0, leftGrabTimer = 0, rightGrabTimer = 0, leftResetTimer = 1.1f, rightResetTimer = 1.1f;
-    bool leftHolding = false, rightHolding = false, leftReset = false, rightReset = false;
+    bool leftHolding = false, rightHolding = false, leftReset = false, rightReset = false, leftClosed = false, rightClosed = false;
 
     Offsets[] offsets = new Offsets[24];
     
@@ -110,7 +110,7 @@ public class BodySourceView : MonoBehaviour
 
                         playerID = body.TrackingId;
 
-                        rotationalOffset = new Vector3(0, camera.transform.eulerAngles.y + 90, 0);
+                        rotationalOffset = new Vector3(0, camera.transform.eulerAngles.y + 90 + 90, 0);
 
                     }
 
@@ -559,7 +559,13 @@ public class BodySourceView : MonoBehaviour
 
             float dt = Time.deltaTime;
 
-            if (body.HandLeftState == Kinect.HandState.Closed && leftResetTimer >= 1) { IsHolding(model, "FingersLeft"); }
+            if (body.HandLeftState == Kinect.HandState.Closed && leftResetTimer >= 1) { leftClosed = true; }
+            else if (body.HandLeftState == Kinect.HandState.Open) { leftClosed = false; }
+
+            if (body.HandRightState == Kinect.HandState.Closed && rightResetTimer >= 1) { rightClosed = true; }
+            else if (body.HandRightState == Kinect.HandState.Open) { rightClosed = false; }
+
+            if (leftClosed) { IsHolding(model, "FingersLeft"); }
             else 
             {
 
@@ -597,7 +603,7 @@ public class BodySourceView : MonoBehaviour
 
             }
 
-            if (body.HandRightState == Kinect.HandState.Closed && rightResetTimer >= 1) { IsHolding(model, "FingersRight"); }
+            if (rightClosed) { IsHolding(model, "FingersRight"); }
             else 
             {
 
