@@ -565,33 +565,20 @@ public class BodySourceView : MonoBehaviour
             if (body.HandRightState == Kinect.HandState.Closed && rightResetTimer >= 1) { rightClosed = true; }
             else if (body.HandRightState == Kinect.HandState.Open) { rightClosed = false; }
 
-            if (leftClosed) { IsHolding(model, "FingersLeft"); }
+            FingerTrigger script = model.transform.Find("FingersLeft").transform.GetChild(0).gameObject.GetComponent<FingerTrigger>();
+
+            if (leftClosed) { script.IsHolding(); }
             else 
             {
 
-                FingerTrigger script = model.transform.Find("FingersLeft").transform.GetChild(0).gameObject.GetComponent<FingerTrigger>();
+                script.stopHolding();
 
-                if (leftGrabbedObject)
-                {
-
-                    Rigidbody rigidbody = leftGrabbedObject.GetComponent<Rigidbody>();
-
-                    leftReset = true;
-                    rigidbody.isKinematic = false;
-                    leftGrabbedObject = null;
-
-                }
-
-                leftHolding = false;
-                leftGrabTimer = 0;
-
-                if (!script.isChecking()) { script.setChecking(false); }
-
-                if (leftReset) 
+                if (script.isReset()) 
                 { 
                     
                     leftResetTimer = 0;
-                    leftReset = false;
+
+                    script.setReset(false);
                 
                 }
                 else
@@ -603,33 +590,19 @@ public class BodySourceView : MonoBehaviour
 
             }
 
-            if (rightClosed) { IsHolding(model, "FingersRight"); }
+            script = model.transform.Find("FingersRight").transform.GetChild(0).gameObject.GetComponent<FingerTrigger>();
+
+            if (rightClosed) { script.IsHolding(); }
             else 
             {
 
-                FingerTrigger script = model.transform.Find("FingersRight").transform.GetChild(0).gameObject.GetComponent<FingerTrigger>();
+                script.stopHolding();
 
-                if (rightGrabbedObject)
-                {
-
-                    Rigidbody rigidbody = rightGrabbedObject.GetComponent<Rigidbody>();
-
-                    rightReset = true;
-                    rigidbody.isKinematic = false;
-                    rightGrabbedObject = null;
-
-                }
-
-                rightHolding = false;
-                rightGrabTimer = 0;
-
-                if (!script.isChecking()) { script.setChecking(false); }
-
-                if (rightReset)
+                if (script.isReset())
                 {
 
                     rightResetTimer = 0;
-                    rightReset = false;
+                    script.setReset(false);
 
                 }
                 else
@@ -738,110 +711,6 @@ public class BodySourceView : MonoBehaviour
         capsule.transform.rotation = Quaternion.FromToRotation(new Vector3(0, 1, 0), length);
 
         offsets[id].endPos = start;
-
-    }
-
-    private void IsHolding(GameObject parent, string name)
-    {
-        
-        bool holding;
-        float grabTimer; 
-        
-        GameObject fingerTriggerObject, grabbedObject;
-        Vector3 offset;
-
-        float testValue = 1;
-
-        fingerTriggerObject = parent.transform.Find(name).transform.GetChild(0).gameObject;
-
-        FingerTrigger script = fingerTriggerObject.GetComponent<FingerTrigger>();
-
-        if (name == "FingersLeft") 
-        { 
-            
-            holding = leftHolding;
-
-            if (leftGrabTimer < testValue) { leftGrabTimer += Time.deltaTime; }
-
-            grabTimer = leftGrabTimer;
-            offset = leftGrabbedOffset;
-            grabbedObject = leftGrabbedObject;
-        
-        }
-        else 
-        { 
-            
-            holding = rightHolding;
-            
-            if (rightGrabTimer < testValue) { rightGrabTimer += Time.deltaTime; }
-
-            grabTimer = rightGrabTimer;
-            offset = rightGrabbedOffset;
-            grabbedObject = rightGrabbedObject;
-
-        }
-
-        if (!holding && grabTimer < testValue)
-        {
-
-            if (!script.isChecking()) { script.setChecking(true); }
-
-            if (script.isCollided())
-            {
-
-                grabbedObject = script.getGrabbed();
-
-                Rigidbody rigidbody = grabbedObject.GetComponent<Rigidbody>();
-                
-                rigidbody.isKinematic = true;
-
-                offset = grabbedObject.transform.position - fingerTriggerObject.transform.position;
-
-                if (name == "FingersLeft") 
-                {
-
-                    if (rightHolding && rightGrabbedObject == grabbedObject) { }
-                    else
-                    {
-
-                        leftGrabbedObject = grabbedObject;
-                        leftGrabbedOffset = offset;
-                        leftHolding = true;
-
-                    }
-
-                
-                }
-                else 
-                {
-
-                    if (leftHolding && leftGrabbedObject == grabbedObject) { }
-                    else
-                    {
-
-                        rightGrabbedObject = grabbedObject;
-                        rightGrabbedOffset = offset;
-                        rightHolding = true;
-
-                    }
-                
-                }
-
-            }
-
-        }
-        else if (holding)
-        {
-
-            grabbedObject.transform.position = fingerTriggerObject.transform.position + offset;
-
-        }
-        else
-        {
-
-            if (!script.isChecking()) { script.setChecking(false); }
-
-        }
 
     }
 
