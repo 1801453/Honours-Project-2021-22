@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 public class HandMaster : MonoBehaviour
 {
 
-    public GameObject leftHand, rightHand;
+    public GameObject leftHand, rightHand, ui;
 
     float leftResetTimer = 1.1f, rightResetTimer = 1.1f;
 
@@ -27,44 +27,69 @@ public class HandMaster : MonoBehaviour
     void handCheck(GameObject hand, Handedness side)
     {
 
-        float resetTimer;
+        MixedRealityPose pose, pose2;
 
-        if (hand.name == "Left Hand") { resetTimer = leftResetTimer; }
-        else { resetTimer = rightResetTimer; }
-
-        if (HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, side, out MixedRealityPose pose))
+        if (HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, side, out pose))
         {
+
+            float resetTimer;
+
+            if (hand.name == "Left Hand") { resetTimer = leftResetTimer; }
+            else { resetTimer = rightResetTimer; }
 
             hand.SetActive(true);
 
             hand.transform.GetChild(0).position = pose.Position;
             hand.transform.GetChild(0).rotation = pose.Rotation;
 
-            if (HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleMiddleJoint, side, out MixedRealityPose pose2))
+            if (HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleMiddleJoint, side, out pose2))
             {
 
                 Vector3 displacement;
                 float distance, dt = Time.deltaTime;
 
-                hand.transform.GetChild(1).position = pose2.Position;
+                hand.transform.GetChild(1).position = pose.Position + (pose.Rotation * (new Vector3(0, 0, 0.0442f)));
                 hand.transform.GetChild(1).rotation = pose.Rotation;
                 
                 displacement = pose2.Position - pose.Position;
                 distance = displacement.magnitude;
 
-                FingerTrigger script = hand.transform.GetChild(1).GetChild(0).gameObject.GetComponent<FingerTrigger>();
+                FingerTrigger script = hand.transform.GetChild(0).GetChild(0).gameObject.GetComponent<FingerTrigger>();
+                FingerTrigger script2 = hand.transform.GetChild(1).GetChild(0).gameObject.GetComponent<FingerTrigger>();
 
-                if (distance < 0.7f && resetTimer >= 1) { script.IsHolding(); }
+                if (distance < 0.075f && resetTimer >= 1) 
+                {
+                    
+                    script.IsHolding();
+                    script2.IsHolding();
+
+                }
                 else
                 {
 
                     script.stopHolding();
+                    script2.stopHolding();
 
-                    if (script.isReset())
+                    if (script.isReset() && script2.isReset())
                     {
 
                         resetTimer = 0;
                         script.setReset(false);
+                        script2.setReset(false);
+
+                    }
+                    else if (script.isReset())
+                    {
+
+                        resetTimer = 0;
+                        script.setReset(false);
+
+                    }
+                    else if (script2.isReset())
+                    {
+
+                        resetTimer = 0;
+                        script2.setReset(false);
 
                     }
                     else
@@ -76,24 +101,13 @@ public class HandMaster : MonoBehaviour
 
                 }
 
-                if (HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbProximalJoint, side, out MixedRealityPose pose3))
-                {
-
-                    hand.transform.GetChild(2).position = pose3.Position;
-                    hand.transform.GetChild(2).rotation = pose.Rotation;
-                 
-                    displacement = pose3.Position - pose.Position;
-                    distance = displacement.magnitude;
-
-                }
-
             }
+
+            if (hand.name == "Left Hand") { leftResetTimer = resetTimer; }
+            else { rightResetTimer = resetTimer; }
 
         }
         else { hand.SetActive(false); }
-
-        if (hand.name == "Left Hand") { leftResetTimer = resetTimer; }
-        else { rightResetTimer = resetTimer; }
 
     }
 

@@ -5,13 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Opening Scene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 0
     path: Assets/Scenes/Motion Tracking Scene.unity
     guid: 811661f1c43d50d4095644d3202091c6
   - enabled: 0
-    path: Assets/Scenes/Opening Scene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
     path: Assets/Scenes/Controller Tracking Scene.unity
     guid: e42df53ce585945448d1911eac447407
   m_configObjects:

@@ -19,6 +19,7 @@ public class FingerTrigger : MonoBehaviour
         collision = false;
         check = false;
         reset = false;
+        grabTimer = 0;
         objects = GameObject.FindGameObjectsWithTag("Object");
 
     }
@@ -47,7 +48,12 @@ public class FingerTrigger : MonoBehaviour
             }
 
         }
-        else { collision = false; }
+        else 
+        {
+            
+            if (collision) { collision = false; }
+
+        }
 
     }
 
@@ -61,6 +67,8 @@ public class FingerTrigger : MonoBehaviour
 
     public void IsHolding()
     {
+
+        grabTimer += Time.deltaTime;
 
         if (!holding && grabTimer < 1)
         {

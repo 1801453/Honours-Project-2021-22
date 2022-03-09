@@ -8,11 +8,14 @@ public class FacingUser : MonoBehaviour
 
     GameObject camera;
 
+    float timer;
+
     // Start is called before the first frame update
     void Start()
     {
 
         camera = GameObject.Find("Main Camera");
+        timer = 0;
 
     }
 
@@ -21,27 +24,47 @@ public class FacingUser : MonoBehaviour
     {
 
         Vector3 cameraPosition, myPosition, direction, rotation, offset;
+        Quaternion angle;
+        RaycastHit hit;
 
-        float angle;
+        float degrees;
 
         cameraPosition = camera.transform.position;
         myPosition = this.transform.parent.position;
 
         direction = cameraPosition - myPosition;
+        direction.y = 0;
 
-        angle = (float)Math.Atan2(-direction.x, -direction.z);
-        
-        offset = new Vector3(0, 0, -0.51f);
+        angle = Quaternion.FromToRotation(new Vector3(0, 0, -1), direction);
+        degrees = angle.eulerAngles.y;
+        rotation = new Vector3(90, degrees + 180, 0);
 
-        /*offset.x = (0 * (float)Math.Cos(-angle)) - (-0.51f * (float)Math.Sin(-angle));
-        offset.z = (0 * (float)Math.Sin(-angle)) + (-0.51f * (float)Math.Cos(-angle));*/
-
-        angle = angle * (180 / (float)Math.PI);
-        Debug.Log(angle);
-        rotation = new Vector3(90, angle + 180, 0);
+        offset = Quaternion.Euler(rotation) * new Vector3(0.51f, 0, 0);
 
         this.transform.eulerAngles = rotation;
         this.transform.localPosition = offset;
+
+        cameraPosition = camera.transform.rotation * new Vector3(0, 0, 1);
+
+        if (Physics.Raycast(camera.transform.position, cameraPosition, out hit))
+        {
+
+            if (hit.collider.gameObject == this || hit.collider.gameObject == this.transform.parent.gameObject)
+            {
+
+                timer += Time.deltaTime;
+
+                if (timer > 5)
+                {
+
+
+
+                }
+
+            }
+
+        }
+        else { timer = 0; }
 
     }
 
