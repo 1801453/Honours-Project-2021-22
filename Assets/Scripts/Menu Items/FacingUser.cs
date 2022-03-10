@@ -2,20 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FacingUser : MonoBehaviour
 {
 
     GameObject camera;
+    Vector3 baseOffset;
 
     float timer;
+    public string targetScene;
 
     // Start is called before the first frame update
     void Start()
     {
 
+        float z;
+
         camera = GameObject.Find("Main Camera");
         timer = 0;
+        baseOffset = this.transform.localPosition;
+
+        z = baseOffset.z;
+        baseOffset.z = baseOffset.y;
+        baseOffset.x = baseOffset.x;
 
     }
 
@@ -49,17 +59,12 @@ public class FacingUser : MonoBehaviour
         if (Physics.Raycast(camera.transform.position, cameraPosition, out hit))
         {
 
-            if (hit.collider.gameObject == this || hit.collider.gameObject == this.transform.parent.gameObject)
+            if (hit.collider.gameObject == this.gameObject || hit.collider.gameObject == this.transform.parent.gameObject)
             {
 
                 timer += Time.deltaTime;
 
-                if (timer > 5)
-                {
-
-
-
-                }
+                if (timer > 5) { SceneManager.LoadScene(targetScene); }
 
             }
 
