@@ -9,6 +9,7 @@ public class BasicObject : MonoBehaviour
     bool kinematic;
 
     Vector3 startLoc, intermediatePos, priorPos, velocity;
+    Quaternion startRot;
     Rigidbody rigidbody;
 
     // Start is called before the first frame update
@@ -16,6 +17,7 @@ public class BasicObject : MonoBehaviour
     {
 
         startLoc = this.transform.localPosition;
+        startRot = this.transform.rotation;
         priorPos = this.transform.position;
         intermediatePos = priorPos;
         velocity = new Vector3(0, 0, 0);
@@ -55,9 +57,9 @@ public class BasicObject : MonoBehaviour
                 if (despawnTimer >= 10)
                 {
 
-                    this.transform.localPosition = startLoc;
                     despawnTimer = 0;
-                    rigidbody.velocity = new Vector3(0, 0, 0);
+
+                    resetObject();
 
                 }
 
@@ -85,6 +87,15 @@ public class BasicObject : MonoBehaviour
             kinectTimer = 0;
         
         }
+
+    }
+
+    public void resetObject()
+    {
+
+        this.transform.localPosition = startLoc;
+        this.transform.rotation = startRot;
+        rigidbody.velocity = new Vector3(0, 0, 0);
 
     }
 

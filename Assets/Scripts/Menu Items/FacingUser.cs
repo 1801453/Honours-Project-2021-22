@@ -7,11 +7,11 @@ using UnityEngine.SceneManagement;
 public class FacingUser : MonoBehaviour
 {
 
+    public GameObject host, target;
     GameObject camera;
     Vector3 baseOffset;
 
     float timer;
-    public string targetScene;
 
     // Start is called before the first frame update
     void Start()
@@ -64,7 +64,27 @@ public class FacingUser : MonoBehaviour
 
                 timer += Time.deltaTime;
 
-                if (timer > 5) { SceneManager.LoadScene(targetScene); }
+                if (timer > 5) 
+                {
+
+                    GameObject[] objects;
+
+                    timer = 0;
+                    objects = GameObject.FindGameObjectsWithTag("Object");
+
+                    for (int i = 0; i < objects.Length; i++)
+                    {
+
+                        BasicObject script = objects[i].transform.GetComponent<BasicObject>();
+
+                        script.resetObject();
+
+                    }
+
+                    target.SetActive(true);
+                    host.SetActive(false);
+                
+                }
 
             }
 
