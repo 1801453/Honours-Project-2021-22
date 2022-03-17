@@ -9,7 +9,6 @@ public class FacingUser : MonoBehaviour
 
     public GameObject host, target;
     GameObject camera;
-    Vector3 baseOffset;
 
     float timer;
 
@@ -21,11 +20,6 @@ public class FacingUser : MonoBehaviour
 
         camera = GameObject.Find("Main Camera");
         timer = 0;
-        baseOffset = this.transform.localPosition;
-
-        z = baseOffset.z;
-        baseOffset.z = baseOffset.y;
-        baseOffset.x = baseOffset.x;
 
     }
 
