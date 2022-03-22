@@ -294,29 +294,34 @@ public class BodySourceView : MonoBehaviour
         if (id == playerID)
         {
 
-            GameObject trigger = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            Rigidbody rigidbody = trigger.AddComponent<Rigidbody>();
-            Collider collider = trigger.GetComponent<Collider>();
-            MeshRenderer renderer = trigger.GetComponent<MeshRenderer>();
-            FingerTrigger script = trigger.AddComponent<FingerTrigger>();
+            GameObject triggerLeft = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            Rigidbody rigidbody = triggerLeft.AddComponent<Rigidbody>();
+            Collider collider = triggerLeft.GetComponent<Collider>();
+            MeshRenderer renderer = triggerLeft.GetComponent<MeshRenderer>();
+            FingerTrigger scriptLeft = triggerLeft.AddComponent<FingerTrigger>();
 
-            trigger.name = "FingersLeftTrigger";
-            trigger.transform.parent = model.transform.Find("FingersLeft");
+            triggerLeft.name = "FingersLeftTrigger";
+            triggerLeft.transform.parent = model.transform.Find("FingersLeft");
             rigidbody.isKinematic = true;
             collider.isTrigger = true;
             renderer.enabled = false;
             
-            trigger = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            rigidbody = trigger.AddComponent<Rigidbody>();
-            collider = trigger.GetComponent<Collider>();
-            renderer = trigger.GetComponent<MeshRenderer>();
-            script = trigger.AddComponent<FingerTrigger>();
+            GameObject triggerRight = GameObject.CreatePrimitive(PrimitiveType.Capsule);
 
-            trigger.name = "FingersRightTrigger";
-            trigger.transform.parent = model.transform.Find("FingersRight");
+            rigidbody = triggerRight.AddComponent<Rigidbody>();
+            collider = triggerRight.GetComponent<Collider>();
+            renderer = triggerRight.GetComponent<MeshRenderer>();
+
+            FingerTrigger scriptRight = triggerRight.AddComponent<FingerTrigger>();
+
+            triggerRight.name = "FingersRightTrigger";
+            triggerRight.transform.parent = model.transform.Find("FingersRight");
             rigidbody.isKinematic = true;
             collider.isTrigger = true;
             renderer.enabled = false;
+
+            scriptLeft.otherHand = triggerRight;
+            scriptRight.otherHand = triggerLeft;
 
         }
 

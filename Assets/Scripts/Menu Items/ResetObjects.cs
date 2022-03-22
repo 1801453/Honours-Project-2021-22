@@ -1,13 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class FacingUser : MonoBehaviour
+public class ResetObjects : MonoBehaviour
 {
-
-    public GameObject host, target;
 
     GameObject camera;
     Vector3 startingPos;
@@ -66,7 +62,7 @@ public class FacingUser : MonoBehaviour
 
                 timer += Time.deltaTime;
 
-                if (timer > 5) 
+                if (timer > 5)
                 {
 
                     GameObject[] objects;
@@ -83,9 +79,6 @@ public class FacingUser : MonoBehaviour
 
                     }
 
-                    target.SetActive(true);
-                    host.SetActive(false);
-                
                 }
 
             }

@@ -11,11 +11,6 @@ public class HandMaster : MonoBehaviour
 
     float leftResetTimer = 1.1f, rightResetTimer = 1.1f;
 
-    void Start()
-    {
-        
-    }
-
     void Update()
     {
 
@@ -54,42 +49,24 @@ public class HandMaster : MonoBehaviour
                 displacement = pose2.Position - pose.Position;
                 distance = displacement.magnitude;
 
-                FingerTrigger script = hand.transform.GetChild(0).GetChild(0).gameObject.GetComponent<FingerTrigger>();
-                FingerTrigger script2 = hand.transform.GetChild(1).GetChild(0).gameObject.GetComponent<FingerTrigger>();
+                FingerTrigger script = hand.transform.GetChild(1).GetChild(0).gameObject.GetComponent<FingerTrigger>();
 
                 if (distance < 0.075f && resetTimer >= 1) 
                 {
                     
                     script.IsHolding();
-                    script2.IsHolding();
 
                 }
                 else
                 {
 
                     script.stopHolding();
-                    script2.stopHolding();
 
-                    if (script.isReset() && script2.isReset())
+                    if (script.isReset())
                     {
 
                         resetTimer = 0;
                         script.setReset(false);
-                        script2.setReset(false);
-
-                    }
-                    else if (script.isReset())
-                    {
-
-                        resetTimer = 0;
-                        script.setReset(false);
-
-                    }
-                    else if (script2.isReset())
-                    {
-
-                        resetTimer = 0;
-                        script2.setReset(false);
 
                     }
                     else
