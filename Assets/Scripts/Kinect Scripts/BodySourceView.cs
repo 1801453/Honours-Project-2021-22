@@ -110,7 +110,7 @@ public class BodySourceView : MonoBehaviour
 
                         playerID = body.TrackingId;
 
-                        rotationalOffset = new Vector3(0, camera.transform.eulerAngles.y + 90 + 90, 0);
+                        rotationalOffset = new Vector3(0, camera.transform.eulerAngles.y + 90 + 45, 0);
 
                     }
 
@@ -668,27 +668,12 @@ public class BodySourceView : MonoBehaviour
         {
 
             float difference;
-            bool negative;
 
             difference = Vector3.Angle(offsets[id].offset, length);
-            negative = false;
 
-            if (difference < 0) 
-            { 
-                
-                difference *= -1;
-                negative = true;
-            
-            }
+            if (difference < 0) { difference *= -1; }
 
-            if (difference > 180) 
-            { 
-                
-                difference = 360 - difference;
-
-                negative = !negative;
-            
-            }
+            if (difference > 180) { difference = 360 - difference; }
 
             if (difference > 10) { length = Vector3.RotateTowards(offsets[id].offset, length, 10 * Mathf.Deg2Rad, 60); }
 
