@@ -5,7 +5,7 @@ using UnityEngine;
 public class FingerTrigger : MonoBehaviour
 {
 
-    public GameObject otherHand;
+    public GameObject otherHand, hand;
 
     bool collision, check, holding, reset, sharedHold;
     float grabTimer;
@@ -14,6 +14,7 @@ public class FingerTrigger : MonoBehaviour
     GameObject grabbedObject;
     Vector3 offset;
     Quaternion startQuart, currentQuart;
+    Rigidbody rigidbody;
 
     // Start is called before the first frame update
     void Start()
@@ -42,7 +43,9 @@ public class FingerTrigger : MonoBehaviour
                 if (other.gameObject == objects[i])
                 {
 
-                    grabbedObject = objects[i];
+                    if (objects[i].GetComponent<Rigidbody>() != null) { grabbedObject = objects[i]; }
+                    else { grabbedObject = objects[i].transform.parent.gameObject; }
+
                     collision = true;
                     check = false;
                     i = objects.Length;
@@ -92,12 +95,12 @@ public class FingerTrigger : MonoBehaviour
 
                 }
 
-                Rigidbody rigidbody = grabbedObject.GetComponent<Rigidbody>();
+                rigidbody = grabbedObject.GetComponent<Rigidbody>();
 
                 rigidbody.isKinematic = true;
 
-                offset = grabbedObject.transform.position - this.transform.parent.position;
-                startQuart = this.transform.rotation;
+                offset = grabbedObject.transform.position - hand.transform.position;
+                startQuart = hand.transform.rotation;
                 currentQuart = startQuart;
 
                 holding = true;
@@ -116,7 +119,7 @@ public class FingerTrigger : MonoBehaviour
                 if (script.checkHolding())
                 {
 
-                    Vector3 currentOffset = grabbedObject.transform.position - this.transform.parent.position;
+                    Vector3 currentOffset = grabbedObject.transform.position - hand.transform.position;
 
                     grabbedObject.transform.rotation = Quaternion.FromToRotation(offset, currentOffset);
 
@@ -130,14 +133,14 @@ public class FingerTrigger : MonoBehaviour
 
                 Vector3 position;
 
-                currentQuart = this.transform.rotation;
+                currentQuart = hand.transform.rotation;
                 currentQuart = startQuart * Quaternion.Inverse(currentQuart);
 
                 position = Quaternion.Inverse(currentQuart) * offset;
 
-                grabbedObject.transform.position = this.transform.parent.position + position;
+                grabbedObject.transform.position = hand.transform.position + position;
 
-                Rigidbody rigidbody = grabbedObject.GetComponent<Rigidbody>();
+                rigidbody = grabbedObject.GetComponent<Rigidbody>();
 
                 rigidbody.isKinematic = true;
 

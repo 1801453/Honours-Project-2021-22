@@ -323,6 +323,9 @@ public class BodySourceView : MonoBehaviour
             scriptLeft.otherHand = triggerRight;
             scriptRight.otherHand = triggerLeft;
 
+            scriptLeft.hand = model.transform.Find("HandLeft").gameObject;
+            scriptRight.hand = model.transform.Find("HandRight").gameObject;
+
         }
 
         return body;

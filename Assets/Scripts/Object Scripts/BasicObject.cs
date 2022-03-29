@@ -16,16 +16,32 @@ public class BasicObject : MonoBehaviour
     void Start()
     {
 
-        startLoc = this.transform.localPosition;
-        startRot = this.transform.rotation;
-        priorPos = this.transform.position;
-        intermediatePos = priorPos;
         velocity = new Vector3(0, 0, 0);
-        rigidbody = this.gameObject.GetComponent<Rigidbody>();
         despawnTimer = 0;
         kinectTimer = 0;
         velocityLockTimer = 0;
         kinematic = false;
+
+        if (this.gameObject.GetComponent<Rigidbody>() != null) 
+        {
+
+            startLoc = this.transform.localPosition;
+            startRot = this.transform.rotation;
+            priorPos = this.transform.position;
+            rigidbody = this.gameObject.GetComponent<Rigidbody>(); 
+        
+        }
+        else
+        {
+
+            startLoc = this.transform.parent.transform.localPosition;
+            startRot = this.transform.parent.transform.rotation;
+            priorPos = this.transform.parent.transform.position;
+            rigidbody = this.transform.parent.gameObject.GetComponent<Rigidbody>();
+
+        }
+
+        intermediatePos = priorPos;
 
     }
 
@@ -47,7 +63,10 @@ public class BasicObject : MonoBehaviour
         else
         {
 
-            Vector3 position = this.transform.position;
+            Vector3 position;
+
+            if (this.gameObject.GetComponent<Rigidbody>() != null) { position = this.transform.position; }
+            else { position = this.transform.parent.transform.position; }
 
             if (position.x < -1.5f)
             {
@@ -83,7 +102,10 @@ public class BasicObject : MonoBehaviour
         {
 
             priorPos = intermediatePos;
-            intermediatePos = this.transform.position;
+
+            if (this.gameObject.GetComponent<Rigidbody>() != null) { intermediatePos = this.transform.position; }
+            else { intermediatePos = this.transform.parent.transform.position; }
+
             kinectTimer = 0;
         
         }
@@ -93,8 +115,21 @@ public class BasicObject : MonoBehaviour
     public void resetObject()
     {
 
-        this.transform.localPosition = startLoc;
-        this.transform.rotation = startRot;
+        if (this.gameObject.GetComponent<Rigidbody>() != null)
+        {
+
+            this.transform.localPosition = startLoc;
+            this.transform.rotation = startRot;
+
+        }
+        else
+        {
+
+            this.transform.parent.transform.localPosition = startLoc;
+            this.transform.parent.transform.rotation = startRot;
+
+        }
+
         rigidbody.velocity = new Vector3(0, 0, 0);
 
     }
