@@ -1,4 +1,5 @@
-﻿// Modified Microsoft Supplied Script for the Kinect
+﻿// Script base supplied by Microsoft, altered to fit the artefact
+// Modified sections are commented
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ public class BodySourceView : MonoBehaviour
     {
 
         public string name;
-        public Vector3 offset, endPos;
+        public Vector3 endPos;
 
     }
     
@@ -67,11 +68,14 @@ public class BodySourceView : MonoBehaviour
     {
 
 
+        // Increment the refresh timer
         timer += Time.deltaTime;
 
+        // Check if a kinect frame has elapsed
         if (timer >= 1.0f / 30.0f)
         {
 
+            // If it has subtract the timer by 1 kinect frame
             timer -= 1.0f / 30.0f;
 
             if (BodySourceManager == null)
@@ -105,12 +109,15 @@ public class BodySourceView : MonoBehaviour
 
                     trackedIds.Add(body.TrackingId);
 
+                    // Check if there is a player ID
                     if (playerID == 0)
                     {
 
+                        // If not set the player ID to the current body ID
                         playerID = body.TrackingId;
 
-                        rotationalOffset = new Vector3(0, camera.transform.eulerAngles.y + 90 + 45, 0);
+                        // Set the global rotational offset
+                        rotationalOffset = new Vector3(0, camera.transform.eulerAngles.y + 157.5f, 0);
 
                     }
 
@@ -131,8 +138,10 @@ public class BodySourceView : MonoBehaviour
 
                     _Bodies.Remove(trackingId);
 
+                    // Check if the body lost was the player, and if so signal reset the player ID to 0 so it can be reset
                     if (trackingId == playerID) { playerID = 0; }
 
+                    // Destroy the Body and Model objects of the tracked body
                     Destroy(GameObject.Find("Body:" + trackingId));
                     Destroy(GameObject.Find("Model:" + trackingId));
 
@@ -165,135 +174,117 @@ public class BodySourceView : MonoBehaviour
 
         GameObject body = new GameObject("Body:" + id);
 
+        // Set the parent of this object to be the offset object
         body.transform.SetParent(offsetObject.transform);
 
+        // Create the empty object to store the model segments
         GameObject model = new GameObject("Model:" + id);
 
+        // Set it to have the same parent as the body object
         model.transform.SetParent(offsetObject.transform);
 
+        // Create each segment of the body for later alteration during refresh frames
         CreateCapsule(model, "Head");
 
         offsets[0].name = "Head";
-        offsets[0].offset = new Vector3(0, 0, 0);
 
             CreateCapsule(model, "Neck");
 
             offsets[1].name = "Neck";
-            offsets[1].offset = new Vector3(0, 0, 0);
 
                 CreateCapsule(model, "ShoulderRight");
 
                 offsets[2].name = "ShoulderRight";
-                offsets[2].offset = new Vector3(0, 0, 0);
 
                     CreateCapsule(model, "BicepRight");
 
                     offsets[3].name = "BicepRight";
-                    offsets[3].offset = new Vector3(0, 0, 0);
 
                         CreateCapsule(model, "ForarmRight");
 
                         offsets[4].name = "ForarmRight";
-                        offsets[4].offset = new Vector3(0, 0, 0);
 
                             CreateCapsule(model, "HandRight");
 
                             offsets[5].name = "HandRight";
-                            offsets[5].offset = new Vector3(0, 0, 0);
 
                                 CreateCapsule(model, "FingersRight");
 
                                 offsets[6].name = "FingersRight";
-                                offsets[6].offset = new Vector3(0, 0, 0);
 
                                 CreateCapsule(model, "ThumbRight");
 
                                 offsets[7].name = "ThumbRight";
-                                offsets[7].offset = new Vector3(0, 0, 0);
 
                 CreateCapsule(model, "ShoulderLeft");
 
                 offsets[8].name = "ShoulderLeft";
-                offsets[8].offset = new Vector3(0, 0, 0);
 
                     CreateCapsule(model, "BicepLeft");
 
                     offsets[9].name = "BicepLeft";
-                    offsets[9].offset = new Vector3(0, 0, 0);
 
                         CreateCapsule(model, "ForarmLeft");
 
                         offsets[10].name = "ForarmLeft";
-                        offsets[10].offset = new Vector3(0, 0, 0);
 
                             CreateCapsule(model, "HandLeft");
 
                             offsets[11].name = "HandLeft";
-                            offsets[11].offset = new Vector3(0, 0, 0);
 
                                 CreateCapsule(model, "FingersLeft");
 
                                 offsets[12].name = "FingersLeft";
-                                offsets[12].offset = new Vector3(0, 0, 0);
 
                                 CreateCapsule(model, "ThumbLeft");
 
                                 offsets[13].name = "ThumbLeft";
-                                offsets[13].offset = new Vector3(0, 0, 0);
 
                 CreateCapsule(model, "Chest");
 
                 offsets[14].name = "Chest";
-                offsets[14].offset = new Vector3(0, 0, 0);
 
                     CreateCapsule(model, "Stomach");
 
                     offsets[15].name = "Stomach";
-                    offsets[15].offset = new Vector3(0, 0, 0);
 
                         CreateCapsule(model, "HipRight");
 
                         offsets[16].name = "HipRight";
-                        offsets[16].offset = new Vector3(0, 0, 0);
 
                             CreateCapsule(model, "ThighRight");
 
                             offsets[17].name = "ThighRight";
-                            offsets[17].offset = new Vector3(0, 0, 0);
 
                                 CreateCapsule(model, "ShinRight");
 
                                 offsets[18].name = "ShinRight";
-                                offsets[18].offset = new Vector3(0, 0, 0);
 
                                     CreateCapsule(model, "FootRight");
 
                                     offsets[19].name = "FootRight";
-                                    offsets[19].offset = new Vector3(0, 0, 0);
 
                         CreateCapsule(model, "HipLeft");
 
                         offsets[20].name = "HipLeft";
-                        offsets[20].offset = new Vector3(0, 0, 0);
 
                             CreateCapsule(model, "ThighLeft");
 
                             offsets[21].name = "ThighLeft";
-                            offsets[21].offset = new Vector3(0, 0, 0);
 
                                 CreateCapsule(model, "ShinLeft");
 
                                 offsets[22].name = "ShinLeft";
-                                offsets[22].offset = new Vector3(0, 0, 0);
 
                                     CreateCapsule(model, "FootLeft");
 
                                     offsets[23].name = "FootLeft";
-                                    offsets[23].offset = new Vector3(0, 0, 0);
 
+        // Check if this is the player body
         if (id == playerID)
         {
 
+            // If so create 2 more model objects in the fingers of both hands that will act as triggers to dect collisions when grabbing
             GameObject triggerLeft = GameObject.CreatePrimitive(PrimitiveType.Capsule);
             Rigidbody rigidbody = triggerLeft.AddComponent<Rigidbody>();
             Collider collider = triggerLeft.GetComponent<Collider>();
@@ -320,6 +311,7 @@ public class BodySourceView : MonoBehaviour
             collider.isTrigger = true;
             renderer.enabled = false;
 
+            // Give the scripts of each collider the information needed to allow for proper rotation and positioning of grabbed objects
             scriptLeft.otherHand = triggerRight;
             scriptRight.otherHand = triggerLeft;
 
@@ -536,18 +528,12 @@ public class BodySourceView : MonoBehaviour
 
                                 UpdateCapsule(model, "FootLeft", start, end, 0.07f, 0.05f);
 
-        // Set the offset of the body
-        Vector3 offset;
-
-        offset = camera.transform.position - model.transform.Find("Head").position + offsetObject.transform.position;
-
-        offsetObject.transform.position = offset;
-
         // Rotate chest and stomach to face the correct direction
         Vector3 connections, forward, rotation;
 
         float angle, angle2;
 
+        // Rotate the chest to connect with the 2 shoulders
         forward = new Vector3(1, 0, 0);
         connections = (Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(body.Joints[Kinect.JointType.ShoulderRight])) - (Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(body.Joints[Kinect.JointType.ShoulderLeft]));
         angle = Vector3.Angle(forward, connections);
@@ -555,6 +541,7 @@ public class BodySourceView : MonoBehaviour
         rotation.y -= angle;
         model.transform.Find("Chest").gameObject.transform.eulerAngles = rotation;
 
+        // Rotate the stomach to be between the chest rotation and the hip rotation
         connections = (Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(body.Joints[Kinect.JointType.HipRight])) - (Quaternion.Euler(0, -rotationalOffset.y, 0) * GetVector3FromJoint(body.Joints[Kinect.JointType.HipLeft]));
         angle2 = Vector3.Angle(forward, connections);
         angle = (angle + angle2) / 2;
@@ -562,11 +549,20 @@ public class BodySourceView : MonoBehaviour
         rotation.y -= angle;
         model.transform.Find("Stomach").gameObject.transform.eulerAngles = rotation;
 
+        // Check if this is the player body
         if (body.TrackingId == playerID)
         {
 
             float dt = Time.deltaTime;
 
+            Vector3 offset;
+
+            // If so set the global offset for all bodies
+            offset = camera.transform.position - model.transform.Find("Head").position + offsetObject.transform.position;
+
+            offsetObject.transform.position = offset;
+
+            // Check if either of the hands are open or closed
             if (body.HandLeftState == Kinect.HandState.Closed && leftResetTimer >= 1) { leftClosed = true; }
             else if (body.HandLeftState == Kinect.HandState.Open) { leftClosed = false; }
 
@@ -575,23 +571,29 @@ public class BodySourceView : MonoBehaviour
 
             FingerTrigger script = model.transform.Find("FingersLeft").transform.GetChild(0).gameObject.GetComponent<FingerTrigger>();
 
+            // If the left hand is closed call the function to signal it is closed
             if (leftClosed) { script.IsHolding(); }
             else 
             {
 
+                // Otherwise call the function signalling it is open
                 script.stopHolding();
 
+                // Check if hand just opened
                 if (script.isReset()) 
                 { 
                     
+                    // If so reset the grab timer
                     leftResetTimer = 0;
 
+                    // Signal that it has reset the timer
                     script.setReset(false);
                 
                 }
                 else
                 {
 
+                    // If not just openeing then increment the grab timer
                     if (leftResetTimer < 1) { leftResetTimer += dt; }
 
                 }
@@ -600,6 +602,7 @@ public class BodySourceView : MonoBehaviour
 
             script = model.transform.Find("FingersRight").transform.GetChild(0).gameObject.GetComponent<FingerTrigger>();
 
+            // This will follow the same steps as the left hand but for the right
             if (rightClosed) { script.IsHolding(); }
             else 
             {
@@ -628,12 +631,14 @@ public class BodySourceView : MonoBehaviour
     
     private static Vector3 GetVector3FromJoint(Kinect.Joint joint)
     {
+        // Get the positions of the joint in a Vector3 format
         return new Vector3(joint.Position.X, joint.Position.Y, -joint.Position.Z);
     }
 
     private void CreateCapsule(GameObject parent, string name)
     {
 
+        // Create a capsule object with the given name and parent, as well as setting it as a kinematic rigidbody
         GameObject capsule = GameObject.CreatePrimitive(PrimitiveType.Capsule);
         Rigidbody rigidbody = capsule.AddComponent<Rigidbody>();
 
@@ -646,12 +651,14 @@ public class BodySourceView : MonoBehaviour
     private void UpdateCapsule(GameObject parent, string name, Vector3 start, Vector3 end, float scaleX, float scaleZ)
     {
 
+        // Get the corresponding game object to refresh
         GameObject capsule = parent.transform.Find(name).gameObject;
         Vector3 length;
 
         int id = 0;
         float lengthMag;
 
+        // Find the desired object in the array of object offsets
         for (int i = 0; i < 24; i++)
         {
 
@@ -665,29 +672,18 @@ public class BodySourceView : MonoBehaviour
 
         }
 
+        // Get the distance between the joints the object connects
         length = end - start;
 
-        if (offsets[id].offset != new Vector3(0, 0, 0) && offsets[id].offset != length)
-        {
-
-            float difference;
-
-            difference = Vector3.Angle(offsets[id].offset, length);
-
-            if (difference < 0) { difference *= -1; }
-
-            if (difference > 180) { difference = 360 - difference; }
-
-            if (difference > 10) { length = Vector3.RotateTowards(offsets[id].offset, length, 10 * Mathf.Deg2Rad, 60); }
-
-        }
-
+        // Get the lengths magnitude
         lengthMag = length.magnitude;
 
+        // Set the segments position, rotation and scale
         capsule.transform.localPosition = end - (length / 2);
         capsule.transform.localScale = new Vector3(scaleX, (lengthMag / 4) * 2.5f, scaleZ);
         capsule.transform.rotation = Quaternion.FromToRotation(new Vector3(0, 1, 0), length);
 
+        // Set the end position
         offsets[id].endPos = start;
 
     }
