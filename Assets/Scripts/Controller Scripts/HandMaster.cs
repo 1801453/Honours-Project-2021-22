@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 public class HandMaster : MonoBehaviour
 {
 
-    public GameObject leftHand, rightHand, ui;
+    public GameObject leftHand, rightHand;
 
     float leftResetTimer = 1.1f, rightResetTimer = 1.1f;
 
