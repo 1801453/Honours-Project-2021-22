@@ -1,21 +1,23 @@
+// Commented out sections of code are used for calculating shoulder points, sections of code with "//" on either side of them are used for the testing after shoulder points are calculated
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEditor;
 using System.IO;
 
 public class MarkerbasedTesting : MonoBehaviour
 {
 
-    public GameObject ui, head;
-    public TextAsset textFile;
+    public GameObject head;
+    public string path;
+    public Vector3 rightTarget, leftTarget;
 
     float leftResetTimer = 5.1f, rightResetTimer = 5.1f;
     bool doneLeft, doneRight;
 
-    Vector3 cameraPos, cameraLookAt, right, left;
+    Vector3 cameraPos, cameraLookAt, right, left, shoulderConnector, leftShoulderPos, rightShoulderPos;
     Quaternion rotation;
 
     StreamWriter writer;
@@ -26,8 +28,16 @@ public class MarkerbasedTesting : MonoBehaviour
         doneLeft = false;
         doneRight = false;
 
-        StreamWriter writer = new StreamWriter(AssetDatabase.GetAssetPath(textFile), true);
-        writer.WriteLine("Right:Left");
+        writer = new StreamWriter(path, true);
+
+        /*
+        writer.WriteLine("RightX,RightY,RightZ,LeftX,LeftY,LeftZ");
+        */
+
+        //
+        writer.WriteLine("RightX,RightY,RightZ,RightOffset,LeftX,LeftY,LeftZ,LeftOffset");
+        //
+
         writer.Close();
 
     }
@@ -35,21 +45,46 @@ public class MarkerbasedTesting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         cameraLookAt = head.transform.forward;
 
         rotation.SetFromToRotation(cameraLookAt, new Vector3(1, 0, 0));
 
         cameraPos = rotation * head.transform.position;
+        
+        leftShoulderPos = rotation * head.transform.GetChild(0).transform.GetChild(0).transform.position;
+        rightShoulderPos = rotation * head.transform.GetChild(0).transform.GetChild(1).transform.position;
+        leftShoulderPos -= cameraPos;
+        rightShoulderPos -= cameraPos;
 
         // Complete the hand fuunctions for both hands
         handCheck(Handedness.Right);
         handCheck(Handedness.Left);
 
-        if (doneLeft && doneRight)
+        if (doneLeft && doneRight == doneLeft)
         {
 
-            writer.WriteLine(right.ToString(), ":", left.ToString());
+            //
+            float rightOffset, leftOffset;
+
+            rightOffset = Vector3.Angle(rightTarget, right - rightShoulderPos);
+            leftOffset = Vector3.Angle(leftTarget, left - leftShoulderPos);
+            //
+
+            writer = new StreamWriter(path, true);
+
+            /*
+            writer.WriteLine(right.ToString() + "," + left.ToString());
+            */
+
+            //
+            writer.WriteLine(right.ToString() + "," + rightOffset + "," + left.ToString() + "," + leftOffset);
+            //
+
             writer.Close();
+
+            doneLeft = false;
+            doneRight = false;
 
         }
 
@@ -118,7 +153,7 @@ public class MarkerbasedTesting : MonoBehaviour
                 
                 leftResetTimer = resetTimer;
 
-                if (done && !doneLeft)
+                if (done != doneLeft)
                 {
 
                     left = displacement;
@@ -132,7 +167,7 @@ public class MarkerbasedTesting : MonoBehaviour
                 
                 rightResetTimer = resetTimer;
 
-                if (done && !doneRight)
+                if (done != doneRight)
                 {
 
                     right = displacement;
