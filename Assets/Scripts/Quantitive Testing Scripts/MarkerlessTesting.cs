@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Kinect = Windows.Kinect;
+using System.IO;
 
 using static System.Math;
 
@@ -18,17 +19,18 @@ public class MarkerlessTesting : MonoBehaviour
 
     }
 
-    public Material BoneMaterial;
     public GameObject BodySourceManager, offsetObject, camera;
+    public string path;
+    public Vector3 rightTarget, leftTarget;
 
     Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
     BodySourceManager _BodyManager;
-    Vector3 rotationalOffset, leftGrabbedOffset, rightGrabbedOffset;
+    Vector3 rotationalOffset, leftGrabbedOffset, rightGrabbedOffset, leftHandPos, leftShoulderPos, rightHandPos, rightShoulderPos;
     GameObject leftGrabbedObject, rightGrabbedObject;
 
     ulong playerID;
     float timer = 0, leftGrabTimer = 0, rightGrabTimer = 0, leftResetTimer = 1.1f, rightResetTimer = 1.1f;
-    bool leftHolding = false, rightHolding = false, leftReset = false, rightReset = false, leftClosed = false, rightClosed = false;
+    bool leftHolding = false, rightHolding = false, leftReset = false, rightReset = false, leftClosed = false, rightClosed = false, doneLeft, doneRight;
 
     Offsets[] offsets = new Offsets[24];
 
@@ -64,6 +66,24 @@ public class MarkerlessTesting : MonoBehaviour
         { Kinect.JointType.Neck, Kinect.JointType.Head },
     };
 
+    StreamWriter writer;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+        doneLeft = false;
+        doneRight = false;
+
+        writer = new StreamWriter(path, true);
+
+        writer.WriteLine("RightX,RightY,RightZ,RightOffset,LeftX,LeftY,LeftZ,LeftOffset");
+
+        writer.Close();
+
+    }
+
+    // Update is called once per frame
     void Update()
     {
 
@@ -164,6 +184,53 @@ public class MarkerlessTesting : MonoBehaviour
                 }
 
             }
+
+        }
+
+        if (!doneLeft)
+        {
+
+            if (Input.GetMouseButtonDown(1))
+            {
+
+                GameObject model = GameObject.Find("Model:" + playerID);
+
+                doneLeft = true;
+
+            }
+
+        }
+
+        if (!doneRight)
+        {
+
+            if (Input.GetMouseButtonDown(0))
+            {
+
+                GameObject model = GameObject.Find("Model:" + playerID);
+
+                doneRight = true;
+
+            }
+
+        }
+
+        if (doneLeft && doneRight)
+        {
+
+            float rightOffset, leftOffset;
+
+            rightOffset = Vector3.Angle(rightTarget, rightHandPos - rightShoulderPos);
+            leftOffset = Vector3.Angle(leftTarget, leftHandPos - leftShoulderPos);
+
+            writer = new StreamWriter(path, true);
+
+            writer.WriteLine(rightHandPos.ToString() + "," + rightOffset + "," + leftHandPos.ToString() + "," + leftOffset);
+
+            writer.Close();
+
+            doneLeft = false;
+            doneRight = false;
 
         }
 
@@ -561,6 +628,69 @@ public class MarkerlessTesting : MonoBehaviour
             offset = camera.transform.position - model.transform.Find("Head").position + offsetObject.transform.position;
 
             offsetObject.transform.position = offset;
+
+            // Check if either of the hands are open or closed
+            if (body.HandLeftState == Kinect.HandState.Closed && leftResetTimer >= 1) { leftClosed = true; }
+            else if (body.HandLeftState == Kinect.HandState.Open) { leftClosed = false; }
+
+            if (body.HandRightState == Kinect.HandState.Closed && rightResetTimer >= 1) { rightClosed = true; }
+            else if (body.HandRightState == Kinect.HandState.Open) { rightClosed = false; }
+
+            FingerTrigger script = model.transform.Find("FingersLeft").transform.GetChild(0).gameObject.GetComponent<FingerTrigger>();
+
+            // If the left hand is closed call the function to signal it is closed
+            if (leftClosed) { script.IsHolding(); }
+            else
+            {
+
+                // Otherwise call the function signalling it is open
+                script.stopHolding();
+
+                // Check if hand just opened
+                if (script.isReset())
+                {
+
+                    // If so reset the grab timer
+                    leftResetTimer = 0;
+
+                    // Signal that it has reset the timer
+                    script.setReset(false);
+
+                }
+                else
+                {
+
+                    // If not just openeing then increment the grab timer
+                    if (leftResetTimer < 1) { leftResetTimer += dt; }
+
+                }
+
+            }
+
+            script = model.transform.Find("FingersRight").transform.GetChild(0).gameObject.GetComponent<FingerTrigger>();
+
+            // This will follow the same steps as the left hand but for the right
+            if (rightClosed) { script.IsHolding(); }
+            else
+            {
+
+                script.stopHolding();
+
+                if (script.isReset())
+                {
+
+                    rightResetTimer = 0;
+                    script.setReset(false);
+
+                }
+                else
+                {
+
+                    if (rightResetTimer < 1) { rightResetTimer += dt; }
+
+                }
+
+            }
 
         }
 

@@ -18,7 +18,6 @@ public class BodySourceView : MonoBehaviour
 
     }
     
-    public Material BoneMaterial;
     public GameObject BodySourceManager, offsetObject, camera;
     
     Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
