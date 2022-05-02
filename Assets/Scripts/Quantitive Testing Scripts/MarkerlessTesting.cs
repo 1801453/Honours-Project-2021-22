@@ -25,8 +25,9 @@ public class MarkerlessTesting : MonoBehaviour
 
     Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
     BodySourceManager _BodyManager;
-    Vector3 rotationalOffset, leftGrabbedOffset, rightGrabbedOffset, leftHandPos, leftShoulderPos, rightHandPos, rightShoulderPos;
+    Vector3 rotationalOffset, leftGrabbedOffset, rightGrabbedOffset, leftHandPos, leftShoulderPos, rightHandPos, rightShoulderPos, cameraPos, cameraLookAt;
     GameObject leftGrabbedObject, rightGrabbedObject;
+    Quaternion rotation;
 
     ulong playerID;
     float timer = 0, leftGrabTimer = 0, rightGrabTimer = 0, leftResetTimer = 1.1f, rightResetTimer = 1.1f;
@@ -87,6 +88,12 @@ public class MarkerlessTesting : MonoBehaviour
     void Update()
     {
 
+
+        cameraLookAt = camera.transform.forward;
+
+        rotation.SetFromToRotation(cameraLookAt, new Vector3(1, 0, 0));
+
+        cameraPos = rotation * camera.transform.position;
 
         // Increment the refresh timer
         timer += Time.deltaTime;
@@ -195,6 +202,9 @@ public class MarkerlessTesting : MonoBehaviour
 
                 GameObject model = GameObject.Find("Model:" + playerID);
 
+                leftHandPos = rotation * model.transform.Find("HandLeft").localPosition;
+                leftShoulderPos = rotation * model.transform.Find("ShoulderLeft").localPosition;
+
                 doneLeft = true;
 
             }
@@ -208,6 +218,9 @@ public class MarkerlessTesting : MonoBehaviour
             {
 
                 GameObject model = GameObject.Find("Model:" + playerID);
+
+                rightHandPos = rotation * model.transform.Find("HandRight").localPosition;
+                rightShoulderPos = rotation * model.transform.Find("ShoulderRight").localPosition;
 
                 doneRight = true;
 
