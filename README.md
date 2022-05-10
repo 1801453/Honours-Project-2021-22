@@ -2,4 +2,4 @@
 
 Lybraries and files used:
 Mixed Reality Feature Tools - https://docs.microsoft.com/en-us/windows/mixed-reality/develop/unity/welcome-to-mr-feature-tool
-Kinect Unity Packages - https://developer.microsoft.com/en-us/windows/kinect/
+Kinect Unity Packages and Kinect for Windows SDK 2.0 - https://developer.microsoft.com/en-us/windows/kinect/
